@@ -18,9 +18,7 @@
     "lint": "eslint . --fix --ext ts --ext tsx --ext js",
     "format": "prettier --write .",
     "test-all": "yarn check-format && yarn check-lint && yarn check-types && yarn build",
-    "ignore-files": [
-      "next-env.d.ts"
-    ],
+    "ignore-files":"next-env.d.ts",
     "prepare": "cd .. && husky client/.husky"
   },
   "dependencies": {
