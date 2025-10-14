@@ -1,0 +1,50 @@
+#!/bin/sh
+
+echo '================================================================================'
+echo '🏗️👷 Styling, testing and building your project before committing'
+echo '================================================================================'
+
+# Navigate to client directory if not already there
+cd "$(dirname "$0")/.." || exit 1
+
+echo '🔍 Checking Prettier...'
+if ! yarn check-format; then
+    echo '================================================================================'
+    echo '🤢🤮🤢🤮 Its FOKING RAW - Your styling looks disgusting. 🤢🤮🤢🤮'
+    echo '================================================================================'
+    echo 'Prettier Check Failed. Run yarn format, add changes and try commit again.'
+    exit 1
+fi
+
+echo '🔍 Checking ESLint...'
+if ! yarn check-lint; then
+    echo '================================================================================'
+    echo '😤🏀👋😤 Get that weak shit out of here! 😤🏀👋😤'
+    echo '================================================================================'
+    echo 'ESLint Check Failed. Fix the issues above, add changes and try commit again.'
+    exit 1
+fi
+
+echo '🔍 Checking TypeScript...'
+if ! yarn check-types; then
+    echo '================================================================================'
+    echo '🤡😂❌🤡 Failed Type check. 🤡😂❌🤡'
+    echo '================================================================================'
+    echo 'Fix the type errors above, add changes and try commit again.'
+    exit 1
+fi
+
+echo '================================================================================'
+echo '🤔🤔🤔🤔... Alright.... Code looks good to me... Trying to build now. 🤔🤔🤔🤔'
+echo '================================================================================'
+if ! yarn build; then
+    echo '================================================================================'
+    echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌'
+    echo '================================================================================'
+    echo 'Build failed. Fix the errors above and try commit again.'
+    exit 1
+fi
+
+echo '================================================================================'
+echo '✅✅✅✅ You win this time... I am committing this now! ✅✅✅✅'
+echo '================================================================================'

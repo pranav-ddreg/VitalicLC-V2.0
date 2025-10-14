@@ -1,0 +1,50 @@
+{
+  "name": "vitaliclc-v2-0",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "yarn@1.22.19",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": "please-use-yarn",
+    "yarn": ">=1.22.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "check-types": "tsc --pretty --noEmit",
+    "check-format": "prettier --check .",
+    "check-lint": "eslint . --ext ts --ext tsx --ext js",
+    "lint": "eslint . --fix --ext ts --ext tsx --ext js",
+    "format": "prettier --write .",
+    "test-all": "yarn check-format && yarn check-lint && yarn check-types && yarn build",
+    "ignore-files": [
+      "next-env.d.ts"
+    ],
+    "prepare": "cd .. && husky client/.husky"
+  },
+  "dependencies": {
+    "next": "15.5.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@eslint/js": "^9.30.1",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^24.7.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9.30.1",
+    "eslint-config-next": "15.5.5",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "prettier": "3.6.2",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "typescript-eslint": "^8.36.0"
+  }
+}

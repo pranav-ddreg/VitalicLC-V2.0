@@ -1,0 +1,10 @@
+# Always use LF for these files, even on Windows
+*.js     text eol=lf
+*.ts     text eol=lf
+*.tsx    text eol=lf
+*.json   text eol=lf
+*.css    text eol=lf
+*.mjs    text eol=lf
+*.md     text eol=lf
+.gitignore  text eol=lf
+*        text eol=lf
