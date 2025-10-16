@@ -1,8 +1,12 @@
-import React from 'react'
-import type { Metadata } from 'next'
+'use client'
+
+import './globals.css'
+import React, { useState } from 'react'
+import Sidebar from '../components/Sidebar'
+import Header from '../components/Header'
+// import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
-import './globals.css'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -14,30 +18,42 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
-  title: 'VitalicLC - Sign In',
-  description: 'Sign in to your VitalicLC account',
-}
+// export const metadata: Metadata = {
+//   title: 'VitalicLC - Sign In',
+//   description: 'Sign in to your VitalicLC account',
+// }
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useState<boolean>(true)
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#363636',
-              color: '#fff',
-            },
-          }}
-        />
+        {/* Sticky Header */}
+        <div className="sticky top-0 z-50 bg-white shadow">
+          <Header open={open} setOpen={setOpen} />
+        </div>
+
+        {/* Main Layout */}
+        <div className="flex h-[calc(100vh-56px)]">
+          {/* Sidebar: fixed inside flex layout */}
+          {open && (
+            <div className="w-64 h-full flex-shrink-0">
+              <Sidebar open={open} />
+            </div>
+          )}
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+              },
+            }}
+          />
+          {/* Main content scrolls independently */}
+          <main className="flex-1 overflow-y-auto bg-white p-6">{children}</main>
+        </div>
       </body>
     </html>
   )

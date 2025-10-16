@@ -482,7 +482,7 @@ const SignIn: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="d-flex flex-column gap-2 my-4">
+                  <div className="flex flex-column gap-2 my-4">
                     <button
                       type="submit"
                       className="btn-blue-color w-100"
@@ -534,7 +534,7 @@ const SignIn: React.FC = () => {
                     />
                   </div>
 
-                  <div className="d-flex flex-column gap-2 my-4">
+                  <div className="flex flex-column gap-2 my-4">
                     <button
                       type="submit"
                       className="btn-blue-color w-100"
