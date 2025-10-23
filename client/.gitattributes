@@ -7,4 +7,5 @@
 *.mjs    text eol=lf
 *.md     text eol=lf
 .gitignore  text eol=lf
+yarn.lock text eol=lf
 *        text eol=lf

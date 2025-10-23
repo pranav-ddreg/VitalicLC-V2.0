@@ -1,50 +1,40 @@
 #!/bin/sh
 
-echo '================================================================================'
 echo '🏗️👷 Styling, testing and building your project before committing'
-echo '================================================================================'
 
-# Navigate to client directory if not already there
-cd "$(dirname "$0")/.." || exit 1
+# Make sure we're in the client directory (where package.json is located)
+cd client
 
-echo '🔍 Checking Prettier...'
-if ! yarn check-format; then
-    echo '================================================================================'
-    echo '🤢🤮🤢🤮 Its FOKING RAW - Your styling looks disgusting. 🤢🤮🤢🤮'
-    echo '================================================================================'
-    echo 'Prettier Check Failed. Run yarn format, add changes and try commit again.'
-    exit 1
-fi
+# Check Prettier standards
+yarn check-format || (
+    echo '🤢🤮🤢🤮 Its FOKING RAW - Your styling looks disgusting. 🤢🤮🤢🤮
+            Prettier Check Failed. Files that need formatting:'
+    yarn check-format
+    echo 'Run yarn format, add changes and try commit again.'
+    yarn format
+    git add .
+    false
+)
 
-echo '🔍 Checking ESLint...'
-if ! yarn check-lint; then
-    echo '================================================================================'
-    echo '😤🏀👋😤 Get that weak shit out of here! 😤🏀👋😤'
-    echo '================================================================================'
-    echo 'ESLint Check Failed. Fix the issues above, add changes and try commit again.'
-    exit 1
-fi
+# Check ESLint Standards
+yarn check-lint || (
+    echo '😤🏀👋😤 Get that weak shit out of here! 😤🏀👋😤
+                ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
+    false
+)
 
-echo '🔍 Checking TypeScript...'
-if ! yarn check-types; then
-    echo '================================================================================'
-    echo '🤡😂❌🤡 Failed Type check. 🤡😂❌🤡'
-    echo '================================================================================'
-    echo 'Fix the type errors above, add changes and try commit again.'
-    exit 1
-fi
+# Check tsconfig standards
+yarn check-types || (
+    echo '🤡😂❌🤡 Failed Type check. 🤡😂❌🤡
+            Are you seriously trying to write that? Make the changes required above.'
+    false
+)
 
-echo '================================================================================'
+# If everything passes... Now we can commit
 echo '🤔🤔🤔🤔... Alright.... Code looks good to me... Trying to build now. 🤔🤔🤔🤔'
-echo '================================================================================'
-if ! yarn build; then
-    echo '================================================================================'
-    echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌'
-    echo '================================================================================'
-    echo 'Build failed. Fix the errors above and try commit again.'
-    exit 1
-fi
 
-echo '================================================================================'
-echo '✅✅✅✅ You win this time... I am committing this now! ✅✅✅✅'
-echo '================================================================================'
+yarn build || (
+    echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌
+            Next build failed: View the errors above to see why.'
+    false
+)
