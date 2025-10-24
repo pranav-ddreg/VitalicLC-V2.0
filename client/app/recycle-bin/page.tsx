@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-const RecycleBinPage: React.FC = () => {
+const RecycleBin: React.FC = () => {
   return (
     <div>
       <h1>Recycle Bin</h1>
@@ -10,4 +10,4 @@ const RecycleBinPage: React.FC = () => {
   )
 }
 
-export default RecycleBinPage
+export default RecycleBin

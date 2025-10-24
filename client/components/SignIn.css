@@ -1,0 +1,389 @@
+/* ==============================
+   SignIn Form - Polished Styles
+   - Accessible focus states
+   - Clean inputs/buttons
+   - Better OTP UX
+   - Responsive and touch-friendly
+   - Preserves slide wrapper behavior
+================================= */
+
+/* Theme tokens */
+:root {
+  --bg: #ffffff;
+  --card-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  --text: #0f172a; /* slate-900 */
+  --muted: #6b7280; /* gray-500 */
+  --border: #e5e7eb; /* gray-200 */
+  --border-strong: #d1d5db; /* gray-300 */
+  --primary: #2563eb; /* blue-600 */
+  --primary-600: #1d4ed8; /* blue-700 */
+  --primary-700: #1e40af; /* blue-800 */
+  --ring: rgba(37, 99, 235, 0.35);
+  --error: #ef4444; /* red-500 */
+  --success: #16a34a; /* green-600 */
+  --radius: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --border: #1f2937;
+    --border-strong: #334155;
+    --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* Container for entire signin section */
+.signin-container {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 22px;
+  overflow: hidden;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  color: var(--text);
+  box-sizing: border-box;
+}
+
+/* Slide wrapper (kept as-is; slide to the next form) */
+.form-flip-wrapper {
+  display: flex;
+  width: 200%;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.form-flip-wrapper.flipped {
+  transform: translateX(-50%);
+}
+
+/* Each side of the form */
+.form-side {
+  width: 50%;
+  flex: 0 0 50%;
+  padding: 20px 24px;
+  box-sizing: border-box;
+}
+
+/* Reset transforms (we slide, not rotate) */
+.login-side,
+.otp-side {
+  transform: none;
+}
+
+/* Typography */
+.signin-container h1,
+.signin-container h4 {
+  margin: 4px 0 8px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.signin-container h6 {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+
+/* Form groups spacing */
+.form-group {
+  margin-bottom: 14px;
+  transition: opacity 0.2s ease;
+  display: grid;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Inputs */
+.form-control {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text);
+  font-size: 0.98rem;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+.form-control::placeholder {
+  color: var(--muted);
+  opacity: 0.95;
+}
+
+.form-control:focus,
+.form-control:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--ring);
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.form-control.is-invalid {
+  border-color: var(--error);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+}
+
+.form-control.is-valid {
+  border-color: var(--success);
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.15);
+}
+
+/* Helper / error text */
+small {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+small.error,
+small[style*='color: red'],
+.text-error {
+  color: var(--error) !important;
+  font-weight: 600;
+}
+
+small.muted,
+.text-muted {
+  color: var(--muted);
+}
+
+/* Buttons */
+.btn-blue-color {
+  background: linear-gradient(180deg, var(--primary), var(--primary-600));
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease,
+    opacity 160ms ease;
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.25);
+  width: 100%;
+}
+
+.btn-blue-color:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, var(--primary-600), var(--primary-700));
+  box-shadow: 0 10px 26px rgba(37, 99, 235, 0.3);
+}
+
+.btn-blue-color:active {
+  transform: translateY(0);
+}
+
+.btn-blue-color:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Secondary outline button */
+.btn-outline-secondary {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.btn-outline-secondary:hover {
+  background: rgba(15, 23, 42, 0.05);
+  border-color: var(--border);
+}
+
+/* Link buttons */
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+/* OTP input boxes */
+.otp-inputs-container {
+  display: grid;
+  grid-template-columns: repeat(6, 48px);
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.otp-input-box {
+  width: 48px;
+  height: 56px;
+  line-height: 56px; /* vertically center the single digit across browsers */
+  padding: 0; /* prevent vertical misalignment from default padding */
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-sizing: border-box; /* consistent sizing across browsers */
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums; /* consistent digit widths */
+  letter-spacing: 0.04em;
+  color: var(--text);
+  background: transparent;
+  outline: none;
+  caret-color: var(--primary); /* better caret visibility */
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    transform 80ms ease;
+  appearance: textfield; /* normalize */
+  -moz-appearance: textfield; /* Firefox number input */
+  -webkit-appearance: none; /* WebKit normalize */
+}
+
+/* Remove spinners for number inputs (if OTP inputs use type="number") */
+.otp-input-box::-webkit-outer-spin-button,
+.otp-input-box::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.otp-input-box[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.otp-input-box::placeholder {
+  color: var(--muted);
+  opacity: 0.9;
+}
+
+.otp-input-box:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--ring);
+  background: rgba(37, 99, 235, 0.04);
+}
+
+/* Leave background transparent by default; relies on focus to hint state */
+.otp-input-box:active {
+  transform: scale(0.98);
+}
+
+/* Layout utilities (if framework utilities missing) */
+.w-full {
+  width: 100%;
+}
+.text-center {
+  text-align: center;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .signin-container {
+    padding: 16px 18px;
+  }
+
+  .otp-inputs-container {
+    grid-template-columns: repeat(6, 40px);
+    gap: 8px;
+  }
+
+  .otp-input-box {
+    width: 40px;
+    height: 50px;
+    line-height: 50px; /* keep digit centered on small screens */
+    font-size: 1.1rem;
+  }
+}
+
+/* Accessibility: consistent focus-visible ring */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--ring);
+  border-color: var(--primary);
+}
+
+/* Reduced motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .form-flip-wrapper,
+  .form-control,
+  .btn-blue-color,
+  .btn-outline-secondary,
+  .otp-input-box,
+  .form-group {
+    transition: none !important;
+  }
+}
+
+/* Fix full OTP alignment in SignIn and Forgot Password forms */
+.form-flip-wrapper .form-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* align from top */
+  align-items: center; /* center horizontally */
+  width: 50%;
+  box-sizing: border-box;
+  padding: 20px 24px; /* same padding for all sides */
+}
+
+.form-flip-wrapper .form-side .otp-inputs-container {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.form-flip-wrapper .form-side .resend-container,
+.form-flip-wrapper .form-side .resend-link {
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+}
