@@ -20,11 +20,16 @@ export default defineConfig([
         version: 'detect',
       },
     },
-    rules: {
-      'prettier/prettier': 'warn',
-    },
     extends: ['js/recommended'],
   },
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+  {
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    rules: {
+      'prettier/prettier': 'warn',
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+    },
+  },
 ])
