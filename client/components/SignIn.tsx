@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { toast } from 'react-hot-toast'
+import './SignIn.css'
 
 const SignIn: React.FC = () => {
   const router = useRouter()
@@ -271,7 +272,7 @@ const SignIn: React.FC = () => {
                     <img src="/mini-logo.png" className="sign-favicon" style={{ width: '60px' }} alt="logo" />
                   </div>
 
-                  <h2 className="text-blue font-semibold capitalize">Sign In</h2>
+                  <h1 className="text-blue-700 font-semibold capitalize">Sign In</h1>
                   <h6 className="font-semibold mb-4">Please sign in to continue.</h6>
 
                   <Form>
@@ -360,7 +361,7 @@ const SignIn: React.FC = () => {
                       </div>
                       <Field type="hidden" name="otp" value={otpValues.join('')} />
                       <ErrorMessage name="otp" render={(msg) => <small style={{ color: 'red' }}>{msg}</small>} />
-                      <div className="text-center mt-3">
+                      <div className="text-center mt-3 p-5">
                         <small className="text-muted me-2">Didn&apos;t receive the email?</small>
                         <button
                           type="button"

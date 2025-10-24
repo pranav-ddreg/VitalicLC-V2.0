@@ -213,9 +213,9 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
         {/* Recycle Bin */}
         <li>
           <Link
-            href="/bin"
+            href="/recycle-bin"
             className={`flex items-center gap-3 px-3 py-2 rounded-md transition ${
-              isActive('/bin') ? 'bg-sky-500 text-white' : 'text-black hover:bg-gray-600 hover:text-white'
+              isActive('/recycle-bin') ? 'bg-sky-500 text-white' : 'text-black hover:bg-gray-600 hover:text-white'
             }`}
           >
             <IoTrashBinOutline size={20} />

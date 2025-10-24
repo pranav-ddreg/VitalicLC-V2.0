@@ -11,6 +11,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
@@ -30,5 +31,5 @@
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts", "app/bin"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".next"]
 }
