@@ -1,6 +1,8 @@
 #!/bin/sh
 
+echo '================================================================================'
 echo '🏗️👷 Styling, testing and building your project before committing'
+echo '================================================================================'
 
 # Navigate to project root
 cd "$(dirname "$0")/.." || exit 1
@@ -36,7 +38,7 @@ if ! yarn check-types; then
 fi
 echo '✅ TypeScript compilation passed! 🔷⚡'
 
-# If everything passes... Now we can commit
+echo '================================================================================'
 echo '🤔🤔🤔🤔... Alright.... Code looks good to me... Trying to build now. 🤔🤔🤔🤔'
 echo '================================================================================'
 echo '⚙️  Step 4: Building both client and server...'
@@ -61,3 +63,4 @@ echo '✅ Full build: PASSED 🚀'
 echo '🎉 ========================================================================='
 echo '✅✅✅✅ You win this time... I am committing this now! ✅✅✅✅'
 echo '================================================================================'
+ 

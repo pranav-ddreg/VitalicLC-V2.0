@@ -9,7 +9,6 @@ import { PiStackBold } from 'react-icons/pi'
 import { useRouter } from 'next/navigation'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
-
 import AlertReport from '@/components/dashboard/AlertReport'
 import ExpectedActual from '@/components/dashboard/ExpectedActual'
 import Marquee from '@/components/dashboard/Marquee'
@@ -172,7 +171,6 @@ export default function Dashboard() {
         variationHeadline={dashboard?.data?.headlineRenewal?.variation}
         expireHeadline={dashboard?.data?.expireHeadline}
       />
-
       <div className="flex flex-wrap gap-4">
         {/* Left Main Section */}
         <div className="w-full xl:w-3/4 flex flex-col gap-4">
@@ -203,7 +201,6 @@ export default function Dashboard() {
           <ItemOverView Overview={RenewalOverview} title="Renewal Overview" />
           <AlertReport />
         </div>
-
         {/* Right Sidebar */}
         <div className="w-full xl:w-1/4 flex flex-col gap-4">
           <StatusTop5 data={dashboard?.data?.topCountry} />

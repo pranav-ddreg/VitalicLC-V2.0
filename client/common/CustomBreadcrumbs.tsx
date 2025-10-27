@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { IoIosArrowForward } from 'react-icons/io'
 
 type BreadcrumbItem = {
   name: string
@@ -17,7 +18,7 @@ const CustomBreadcrumbs: React.FC<CustomBreadcrumbsProps> = ({ list }) => {
 
   return (
     <nav className="my-4" aria-label="breadcrumb">
-      <ol className="flex space-x-2 text-sm text-gray-500">
+      <ol className="flex  text-sm text-gray-500">
         {list.map((item, index) => {
           const isLast = index === list.length - 1
 
@@ -26,14 +27,14 @@ const CustomBreadcrumbs: React.FC<CustomBreadcrumbsProps> = ({ list }) => {
               {item.link && !isLast ? (
                 <button
                   onClick={() => router.push(item.link!)}
-                  className="text-blue-600 hover:underline focus:outline-none"
+                  className="text-blue-600 font-medium hover:underline focus:outline-none"
                 >
                   {item.name}
                 </button>
               ) : (
                 <span className="text-gray-700 font-medium">{item.name}</span>
               )}
-              {!isLast && <span className="mx-2">/</span>}
+              {!isLast && <IoIosArrowForward className="text-gray-500 mx-2" />}
             </li>
           )
         })}

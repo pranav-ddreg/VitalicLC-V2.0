@@ -128,7 +128,7 @@ export function DataTable<TData>({
   const updatedCurrentPage = () => {
     const updatedPageIndex = table.getState().pagination.pageIndex
     const updatePageSize = table.getState().pagination?.pageSize
-    console.log(updatePageSize, updatedPageIndex)
+
     router.push(`?page=${updatedPageIndex}&limit=${updatePageSize}`)
   }
   return (
@@ -141,12 +141,12 @@ export function DataTable<TData>({
         setQuery={setQuery || ((query: string) => console.log(query))}
         facetedFilters={facetedFilters}
       />
-      <div className="rounded-md overflow-hidden bg-white dark:bg-neutral-800 border dark:border-neutral-700">
+      <div className="rounded-md overflow-hidden  bg-white dark:bg-neutral-800 border dark:border-neutral-700">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {pagination && <TableHead className="text-xs">S.no</TableHead>}
+                {pagination && <TableHead className="text-neutral-500">S.no</TableHead>}
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id} colSpan={header.colSpan}>

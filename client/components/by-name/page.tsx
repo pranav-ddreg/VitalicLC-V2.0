@@ -12,7 +12,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 
 import usePagination from '@/hooks/usePagination'
-import { useDebounce } from '@/hooks/useDebounce'
+import { useDebounce } from '@/hooks/use-debounce'
 import ProductForm from './productForm'
 import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
 import CustomConfirm from '@/common/CustomConfirm'
@@ -31,11 +31,9 @@ interface ProductFormValues {
 const Product: React.FC = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-
   const [sortBy, setSortBy] = useState<string>(searchParams.get('order') || '')
   const [query, setQuery] = useState<string>(searchParams.get('search') || '')
   const searchQuery = useDebounce(query, 500)
-
   const [mode, setMode] = useState<'add' | 'edit'>('add')
   const [rowData, setRowData] = useState<Partial<ProductFormValues> | null>(null) // ✅ fixed type
   const [showModal, setShowModal] = useState(false)
@@ -43,11 +41,8 @@ const Product: React.FC = () => {
   const [id, setId] = useState<string | null>(null)
   const superAdmin = true // ✅ simplified
   const [showSortDropdown, setShowSortDropdown] = useState<boolean>(false)
-
   const apiUrl = `/api/product/get?limit=12&search=${searchQuery}&order=${sortBy}&sort=${sortBy === '' ? '' : 'title'}`
-
   const { list, isReachingEnd, isLoading, loadingMore, size, setSize, mutate } = usePagination(apiUrl)
-
   const handleEdit = (event: React.MouseEvent, row: ProductType) => {
     event.stopPropagation()
     setId(row._id)
@@ -55,13 +50,11 @@ const Product: React.FC = () => {
     setRowData({ title: row.title }) // ✅ only send form fields
     setShowModal(true)
   }
-
   const handleDeleteClick = (event: React.MouseEvent, productId: string) => {
     event.stopPropagation()
     setId(productId)
     setConfirmModal(true)
   }
-
   const handleDelete = async () => {
     if (!id) return
     try {
@@ -77,7 +70,6 @@ const Product: React.FC = () => {
       }
     }
   }
-
   const lastElementRef = useRef<IntersectionObserver | null>(null)
   const handleLastElement = useCallback(
     (node: HTMLDivElement | null) => {
@@ -115,7 +107,6 @@ const Product: React.FC = () => {
         confirmButtonText="Delete"
         onConfirm={handleDelete}
       />
-
       <ProductForm
         setShowModal={setShowModal}
         showModal={showModal}
@@ -127,14 +118,12 @@ const Product: React.FC = () => {
         data={rowData}
         setData={setRowData}
       />
-
       <CustomBreadcrumbs
         list={[
           { name: 'Dashboard', link: '/dashboard' },
           { name: 'Product', link: '' },
         ]}
       />
-
       <div className="my-4 flex justify-between items-center">
         <h4 className="text-2xl font-semibold">Product</h4>
         {superAdmin && (
@@ -151,7 +140,6 @@ const Product: React.FC = () => {
           </button>
         )}
       </div>
-
       {/* Search & Sort */}
       <div className="mb-4">
         <div className="relative mb-2">
@@ -189,7 +177,6 @@ const Product: React.FC = () => {
                 />
               </svg>
             </button>
-
             {showSortDropdown && (
               <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
                 {[
@@ -213,7 +200,6 @@ const Product: React.FC = () => {
           </div>
         </div>
       </div>
-
       {/* Product list */}
       {Array.isArray(list) && list.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
@@ -233,13 +219,11 @@ const Product: React.FC = () => {
                   </span>
                   <div className="capitalize text-base font-normal line-clamp-2 flex-1">{product.title}</div>
                 </div>
-
                 <div className="mt-3 flex justify-between items-center gap-1">
                   <div className="font-semibold text-sm">
                     {product.country || ''}{' '}
                     {product.country === 0 ? 'No countries' : product.country === 1 ? 'country' : 'countries'}
                   </div>
-
                   <div className="flex gap-1">
                     {superAdmin && (
                       <button
@@ -251,7 +235,6 @@ const Product: React.FC = () => {
                         <span>Edit</span>
                       </button>
                     )}
-
                     {superAdmin && (
                       <button
                         type="button"
@@ -273,7 +256,6 @@ const Product: React.FC = () => {
           <div className="text-xl text-white">There are no products added.</div>
         </div>
       )}
-
       {(isLoading || loadingMore) && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
           {Array.from({ length: 6 }).map((_, idx) => (
@@ -281,7 +263,6 @@ const Product: React.FC = () => {
           ))}
         </div>
       )}
-
       {isReachingEnd && (
         <div className="flex justify-center items-center font-medium py-2 my-3 bg-gray-100">
           You have viewed all products...

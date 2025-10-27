@@ -9,5 +9,4 @@ const ProductByCountry: React.FC = () => {
     </div>
   )
 }
-
 export default ProductByCountry
