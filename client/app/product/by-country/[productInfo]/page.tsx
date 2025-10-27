@@ -9,15 +9,15 @@ import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import usePagination from '@/hooks/usePagination'
-import { useDebounce } from '@/hooks/useDebounce'
+import { useDebounce } from '@/hooks/use-debounce'
 import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
 import CustomConfirm from '@/common/CustomConfirm'
 import ProductForm from '@/components/by-country/productForm'
 import ProductInfoForm from './productInfoForm'
 import type { ProductFormData } from '@/components/by-country/productForm'
 // import { SWRInfiniteKeyedMutator } from 'swr/infinite'
-import CheckSuperAdmin from '@/middleware/CheckSuperAdmin'
-import CheckPermissions from '@/middleware/CheckPermissions'
+// import CheckSuperAdmin from '@/middleware/CheckSuperAdmin'
+// import CheckPermissions from '@/middleware/CheckPermissions'
 
 // Type for pagination items
 interface PaginationItem {
@@ -40,15 +40,15 @@ interface FormPreRegistration {
   stage?: string
 }
 
-interface ApiResponse<T> {
-  data: T[]
-  count?: number
-  message?: string
-}
+// interface ApiResponse<T> {
+//   data: T[]
+//   count?: number
+//   message?: string
+// }
 
-interface PaginationInfo {
-  title: string
-}
+// interface PaginationInfo {
+//   title: string
+// }
 
 const ProductInfo: React.FC = () => {
   const router = useRouter()
@@ -239,17 +239,15 @@ const ProductInfo: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-end">
-                <CheckSuperAdmin>
-                  <CheckPermissions permission="delete">
-                    <button
-                      onClick={(e) => handleDeleteClick(e, item._id)}
-                      className="flex items-center gap-1 px-2 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
-                    >
-                      <MdDeleteOutline size={16} />
-                      Delete
-                    </button>
-                  </CheckPermissions>
-                </CheckSuperAdmin>
+                {/* <CheckPermissions permission="delete"> */}
+                <button
+                  onClick={(e) => handleDeleteClick(e, item._id)}
+                  className="flex items-center gap-1 px-2 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
+                >
+                  <MdDeleteOutline size={16} />
+                  Delete
+                </button>
+                {/* </CheckPermissions> */}
               </div>
             </motion.div>
           ))}

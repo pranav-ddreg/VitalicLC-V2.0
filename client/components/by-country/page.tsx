@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 
 import usePagination from '@/hooks/usePagination'
-import { useDebounce } from '@/hooks/useDebounce'
+import { useDebounce } from '@/hooks/use-debounce'
 import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
 
 interface Country {
