@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 import usePagination from '@/hooks/usePagination'
 import ProductInfoForm from './productInfoForm'
-import { useDebounce } from '@/hooks/useDebounce'
+import { useDebounce } from '@/hooks/use-debounce'
 import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
 import CustomConfirm from '@/common/CustomConfirm'
 import { AiOutlineSortAscending, AiOutlineSortDescending } from 'react-icons/ai'

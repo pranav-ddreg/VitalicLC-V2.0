@@ -328,8 +328,7 @@ const SignIn: React.FC = () => {
               validationSchema={otpValidationSchema}
               onSubmit={onOtpSubmit}
             >
-              {({ isSubmitting, setFieldValue, values }) => {
-                console.log('OTP Form Values:', values)
+              {({ isSubmitting, setFieldValue }) => {
                 return (
                   <Form>
                     <div className="otp-header text-center mb-4">

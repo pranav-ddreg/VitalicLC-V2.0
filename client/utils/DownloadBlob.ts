@@ -25,8 +25,7 @@ export const DownloadBlob = async (url: string, filename: string): Promise<void>
     link.parentNode?.removeChild(link)
 
     toast.success('Downloaded Successfully.', { id: toastId })
-  } catch (err) {
+  } catch {
     toast.error('Download failed.', { id: toastId })
-    console.error('DownloadBlob error:', err)
   }
 }

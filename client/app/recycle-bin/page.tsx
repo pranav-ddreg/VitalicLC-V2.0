@@ -1,13 +1,24 @@
-'use client'
-
+import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
+import RecycleBinTable from '@/components/recycle-bin/recycle-bin-table'
 import React from 'react'
+import Header from '@/common/header'
+import { Suspense } from 'react'
 
-const RecycleBin: React.FC = () => {
+function page() {
   return (
-    <div>
-      <h1>Recycle Bin</h1>
-    </div>
+    <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CustomBreadcrumbs
+          list={[
+            { name: 'Dashboard', link: '/dashboard' },
+            { name: 'Recycle Bin', link: '' },
+          ]}
+        />
+        <Header title={'Recycle Bin'} />
+        <RecycleBinTable />
+      </Suspense>
+    </>
   )
 }
 
-export default RecycleBin
+export default page

@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useEffect } from 'react'
 import axios, { AxiosError } from 'axios'
 import { useForm, SubmitHandler } from 'react-hook-form'
@@ -53,7 +52,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
   setId,
   data,
   setData,
-  productId,
   setProductId,
 }) => {
   const {
@@ -87,8 +85,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
         }>('/api/product/add', formData)
         toast.success(response?.message)
         if (setProductId) setProductId(response?.id) // productId updated
-        console.log('Current productId:', productId)
-        console.log('Product created:', response?.id)
       } else {
         const { data: response } = await axios.put<{ message: string }>(`/api/product/update/${id}`, formData)
         toast.success(response?.message)
@@ -122,7 +118,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
           isSubmitting={isSubmitting}
           fields={fields}
           showSubmitBtn={true}
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={onSubmit}
+          handleSubmit={handleSubmit}
         />
       }
       size="md"

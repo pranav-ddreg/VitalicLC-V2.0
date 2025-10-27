@@ -138,27 +138,3 @@ storybook-static
 
 # Application specific
 .qodo
-lib-cov
-lcov.info
-.nyc_output/
-
-# Temporary folders
-temp/
-tmp/
-.tmp/
-
-# Local development files
-.local
-.development
-.production
-
-# Backup files
-*.backup
-*.bak
-*.backup.*
-*.bak.*
-
-# Database files (local development)
-*.db
-*.sqlite
-*.sqlite3

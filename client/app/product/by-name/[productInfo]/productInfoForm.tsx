@@ -142,7 +142,7 @@ const ProductInfoForm: React.FC<ProductInfoFormProps> = ({
         fieldType: 'select',
         options: Array.isArray(countries?.data?.data) ? countries.data.data : [],
         matchField: '_id',
-        renderField: (option) => <>{option.title}</>, // JSX wrapper fixes type
+        renderField: (option) => <>{option.title}</>,
       },
       {
         name: 'brandName',
@@ -244,7 +244,7 @@ const ProductInfoForm: React.FC<ProductInfoFormProps> = ({
             isSubmitting={isSubmitting}
             fields={fields as unknown as Field<Record<string, unknown>>[]}
             showSubmitBtn={false}
-            onSubmit={(e) => e.preventDefault()}
+            // onSubmit={(e) => e.preventDefault()}
           />
 
           <div className="border rounded p-4 my-5 relative">
