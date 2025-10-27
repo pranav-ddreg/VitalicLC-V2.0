@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+</head>
+
+<body>
+  <div class="p-2" id="preregistrationData">
+    <div class="d-flex flex-column rounded my-2">
+      <h3 class="text-center pb-3"><%- title %></h3>
+      <div class="list">
+        <table class="table table-bordered">
+          <thead>
+            <tr class="bg-primary-subtle">
+              <% fieldsToExport.forEach((field)=> { %>
+                <th scope="col" class="text-capitalize"><%- (()=> {
+                    switch (field) {
+                    case 'registrationDate':
+                    return 'approvalDate';
+                    case 'product':
+                    return 'productName';
+                    case 'renewDate':
+                    return 'renewalDate';
+                    default:
+                    return field;
+                    }
+                    })()%></th>
+                <% }) %>
+            </tr>
+          </thead>
+          <% data.forEach( (val)=> { %>
+            <tr class="text-capitalize">
+              <% fieldsToExport.forEach( (field)=> { %>
+                <% if(field==='product' || field==='company' || field==='country') { %>
+                  <% if(typeof val[field] === 'string' && !Array.isArray(val[field])) { %>
+                    <td><%- val[field] %></td>
+                  <% } else { %>
+                    <td><%- val[field]?.title %></td>
+                  <% } %>
+                  <%}else if(field==='plan' ) { %>
+                    <td><%- val[field]?.[field] || val[field] %></td>
+                    <%}else if(field==='permissions' ) { %>
+                      <td><%- val[field]?.join(',') %></td>
+                      <%}else if(field==='localPartner' ) { %>
+                        <td><%- Array.isArray(val[field])
+                            ? (val[field]?.length===1 && !val[field]?.[0]?.partnerName ? "N/A"
+                                :val[field]?.map((partner)=> partner?.partnerName).join(','))
+                            : (val[field] || "N/A") %></td>
+                        <% }else if(Object.prototype.toString.call(val[field])==="[object Date]" ){ %>
+                          <td><%- new Date(val[field]).toLocaleDateString() %></td>
+                          <% }else{ %>
+                            <td><%- val[field] || "N/A" %></td>
+                            <% } %>
+                              <% }) %>
+            </tr>
+            <% }) %>
+              </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -4,10 +4,11 @@ echo '==========================================================================
 echo '🏗️👷 Styling, testing and building your project before committing'
 echo '================================================================================'
 
-# Navigate to client directory if not already there
+# Navigate to project root
 cd "$(dirname "$0")/.." || exit 1
 
-echo '🔍 Checking Prettier...'
+echo '🎯 Starting VitaLC Code Quality Gate...'
+echo '🔧 Step 1: Checking Prettier formatting...'
 if ! yarn check-format; then
     echo '================================================================================'
     echo '🤢🤮🤢🤮 Its FOKING RAW - Your styling looks disgusting. 🤢🤮🤢🤮'
@@ -15,8 +16,9 @@ if ! yarn check-format; then
     echo 'Prettier Check Failed. Run yarn format, add changes and try commit again.'
     exit 1
 fi
+echo '✅ Prettier formatting passed! 👯‍♀️✨'
 
-echo '🔍 Checking ESLint...'
+echo '🔧 Step 2: Checking ESLint rules...'
 if ! yarn check-lint; then
     echo '================================================================================'
     echo '😤🏀👋😤 Get that weak shit out of here! 😤🏀👋😤'
@@ -24,8 +26,9 @@ if ! yarn check-lint; then
     echo 'ESLint Check Failed. Fix the issues above, add changes and try commit again.'
     exit 1
 fi
+echo '✅ ESLint rules passed! 🕵️‍♂️🔍'
 
-echo '🔍 Checking TypeScript...'
+echo '🔧 Step 3: Checking TypeScript compilation...'
 if ! yarn check-types; then
     echo '================================================================================'
     echo '🤡😂❌🤡 Failed Type check. 🤡😂❌🤡'
@@ -33,10 +36,12 @@ if ! yarn check-types; then
     echo 'Fix the type errors above, add changes and try commit again.'
     exit 1
 fi
+echo '✅ TypeScript compilation passed! 🔷⚡'
 
 echo '================================================================================'
 echo '🤔🤔🤔🤔... Alright.... Code looks good to me... Trying to build now. 🤔🤔🤔🤔'
 echo '================================================================================'
+echo '⚙️  Step 4: Building both client and server...'
 if ! yarn build; then
     echo '================================================================================'
     echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌'
@@ -44,7 +49,17 @@ if ! yarn build; then
     echo 'Build failed. Fix the errors above and try commit again.'
     exit 1
 fi
+echo '✅ Build successful! Next.js + TypeScript compiled perfectly! 🚀🔥'
 
 echo '================================================================================'
+echo '🎉 ========================================================================='
+echo '🎉    CODE QUALITY CHECKS PASSED! COMMIT APPROVED!    '
+echo '🎉 ========================================================================='
+echo '✅ All checks completed successfully!'
+echo '✅ Prettier formatting: PASSED ✨'
+echo '✅ ESLint linting: PASSED 🔍'
+echo '✅ TypeScript types: PASSED 🔷'
+echo '✅ Full build: PASSED 🚀'
+echo '🎉 ========================================================================='
 echo '✅✅✅✅ You win this time... I am committing this now! ✅✅✅✅'
 echo '================================================================================'

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preregistration Details</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .logo { position: absolute; top: 20px; left: 20px; width: 100px; }
+        .header { text-align: center; margin-top: 20px; font-size: 24px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .value { font-weight: bold; }
+        .download-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white !important;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 5px;
+            border: 1px solid #007bff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .download-button:visited {
+            color: white !important;
+        }
+        .download-button:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            text-decoration: none;
+            color: white !important;
+        }
+        .note-row { background-color: #ffeaea; }
+        .note-text { color: #d8000c; }
+    </style>
+</head>
+<body>
+    <img src="<%= data.logo %>" alt="Vitalic Logo" class="logo">
+    <div class="header">Pre-Registration Details</div>
+    <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>Procedure Type</td><td class="value">Initial Registration</td></tr>
+        <tr><td>Marketing Authorisation Number(s)</td><td class="value"><%= data.registrationNo || 'N/A' %></td></tr>
+        <tr><td>Agency Correspondence reference number</td><td class="value"><%= data.notificationNumber || 'N/A' %></td></tr>
+        <tr><td>Date of submission(s)</td><td class="value"><%= data.submissionDate ? new Date(data.submissionDate).toLocaleDateString() : 'N/A' %></td></tr>
+        <tr><td>Date of Approval</td><td class="value">N/A</td></tr>
+        <tr><td>Submission Route</td><td class="value"><%= data.modeOfRegistration || 'N/A' %></td></tr>
+        <tr><td>API Source name</td><td class="value"><%= data.api.map(item => item.apiSourceName).join('<br>') %></td></tr>
+        <tr><td>API Source submission method</td><td class="value"><%= data.api.map(item => item.apiSourceMethod).join('<br>') %></td></tr>
+        <tr><td>FPP Manufacturer (s) name</td><td class="value"><%= data.api.map(item => `${item.apiSourceName}`).join('<br>') %></td></tr>
+        <tr><td>Shelf life</td><td class="value"><%= data.shelfLife || 'N/A' %></td></tr>
+        <tr><td>Pack size</td><td class="value"><%= data.packSize || 'N/A' %></td></tr>
+        <tr><td>Batch size</td><td class="value"><%= data.batchSize || 'N/A' %></td></tr>
+        <tr><td>Brief description</td><td class="value"><%= data.remark || 'N/A' %></td></tr>
+        <tr><td>SKU number of FPP</td><td class="value"><%= data.SKUCode || 'N/A' %></td></tr>
+        <tr><td>Label</td><td class="value"><%= data.registeredArtworkLabel || 'N/A' %></td></tr>
+        <tr><td>Carton</td><td class="value"><%= data.registeredArtworkCarton || 'N/A' %></td></tr>
+        <tr><td>Secondary packing</td><td class="value"><%= data.registeredArtworkOuterCarton || 'N/A' %></td></tr>
+        <tr><td>SPC version</td><td class="value">N/A</td></tr>
+        <tr><td>PIL version</td><td class="value">N/A</td></tr>
+        <tr><td>Labelling or packaging components affected?</td><td class="value">N/A</td></tr>
+        <tr><td>Artwork version number, if applicable</td><td class="value">N/A</td></tr>
+        <tr><td>Remarks</td><td class="value"><%= data.remark || 'N/A' %></td></tr>
+        <tr><td>Implementation date</td><td class="value">N/A</td></tr>
+        <tr><td>Attachment(s)</td><td class="value">
+            <% if (data.rc) { %><div><a href="<%= data.rcPresigned %>" target="_blank" class="download-button"><span style="margin-right: 5px;">📄</span>Download RC</a></div><br><% } %>
+            <% if (data.batchFormula) { %><div><a href="<%= data.batchFormulaPresigned %>" target="_blank" class="download-button"><span style="margin-right: 5px;">📄</span>Download Batch Formula</a></div><br><% } %>
+            <% if (data.registeredArtworkPIL) { %><div><a href="<%= data.registeredArtworkPILPresigned %>" target="_blank" class="download-button"><span style="margin-right: 5px;">📄</span>Download PIL</a></div><br><% } %>
+        </td></tr>
+        <tr class="note-row">
+            <td colspan="2" style="text-align: center; font-weight: bold;" class="note-text">
+                <strong>NOTE:</strong> Download links will not work after 24 hours from generation time (<%= new Date(Date.now() + 24 * 60 * 60 * 1000).toLocaleString() %>)
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

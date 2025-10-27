@@ -1,0 +1,48 @@
+{
+  "name": "vitaliclc-monorepo",
+  "version": "2.0.0",
+  "description": "VitaLC - Regulatory Compliance Management System",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": "please-use-yarn",
+    "yarn": ">=1.22.0"
+  },
+  "scripts": {
+    "build": "yarn build:client && yarn build:server",
+    "build:client": "cd client && yarn build",
+    "build:server": "cd server && yarn build",
+    "dev": "concurrently \"yarn dev:client\" \"yarn dev:server\"",
+    "dev:client": "cd client && yarn dev",
+    "dev:server": "cd server && yarn dev",
+    "check-types": "yarn check-types:client && yarn check-types:server",
+    "check-types:client": "cd client && yarn check-types",
+    "check-types:server": "cd server && tsc --noEmit",
+    "check-format": "yarn check-format:client && yarn check-format:server",
+    "check-format:client": "cd client && yarn check-format",
+    "check-format:server": "cd server && yarn check-format",
+    "check-lint": "yarn check-lint:client && yarn check-lint:server",
+    "check-lint:client": "cd client && yarn check-lint",
+    "check-lint:server": "cd server && yarn run eslint --ext .ts,.js",
+    "lint": "yarn lint:client && yarn lint:server",
+    "lint:client": "cd client && yarn lint",
+    "lint:server": "cd server && yarn run eslint --ext .ts,.js --fix",
+    "format": "yarn format:client && yarn format:server",
+    "format:client": "cd client && yarn format",
+    "format:server": "cd server && yarn format",
+    "test": "yarn test:client && yarn test:server",
+    "test:client": "echo 'Client tests skipped - not configured'",
+    "test:server": "cd server && yarn test",
+    "test-all": "yarn check-format && yarn check-lint && yarn check-types && yarn build",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11"
+  }
+}
