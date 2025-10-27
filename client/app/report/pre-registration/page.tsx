@@ -1,13 +1,24 @@
-'use client'
-
+import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
 import React from 'react'
+import Header from '@/common/header'
+import { Suspense } from 'react'
+import PreRegistrationTable from '@/components/pre-registration/pre-registration-table'
 
-const Registration: React.FC = () => {
+function page() {
   return (
-    <div>
-      <h1>Registration</h1>
-    </div>
+    <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CustomBreadcrumbs
+          list={[
+            { name: 'Dashboard', link: '/dashboard' },
+            { name: 'Registration', link: '' },
+          ]}
+        />
+        <Header title={'Registration'} />
+        <PreRegistrationTable />
+      </Suspense>
+    </>
   )
 }
 
-export default Registration
+export default page
