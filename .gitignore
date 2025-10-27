@@ -139,9 +139,6 @@ coverage/
 # Prettier cache
 .prettiercache
 
-# Husky git hooks
-.husky/_/
-
 # Documentation builds
 docs/build/
 
