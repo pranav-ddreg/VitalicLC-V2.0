@@ -2,10 +2,13 @@
 
 import React, { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
-import * as Yup from 'yup'
 import { toast } from 'react-hot-toast'
-import './SignIn.css'
+import RightBranding from './auth/RightBranding'
+import LoginForm from './auth/LoginForm'
+import OtpForm from './auth/OtpForm'
+import ForgotPasswordForm from './auth/ForgotPasswordForm'
+import ResetPasswordForm from './auth/ResetPasswordForm'
+import { POST } from '@/lib/http-methods'
 
 const SignIn: React.FC = () => {
   const router = useRouter()
@@ -13,125 +16,70 @@ const SignIn: React.FC = () => {
   const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false)
   const [showForgotOtpForm, setShowForgotOtpForm] = useState(false)
   const [showResetPasswordForm, setShowResetPasswordForm] = useState(false)
-
-  // Mock user info from localStorage
-  // const [userInfo] = useState(() => {
-  //   if (typeof window !== 'undefined') {
-  //     const stored = localStorage.getItem('userInfo')
-  //     return stored ? JSON.parse(stored) : null
-  //   }
-  //   return null
-  // })
-
+  const [showPassword, setShowPassword] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
+  console.log('Forgot Password Email:', forgotPasswordEmail) // Debugging line
   const [otpValues, setOtpValues] = useState<string[]>(['', '', '', '', '', ''])
   const [forgotOtpValues, setForgotOtpValues] = useState<string[]>(['', '', '', '', '', ''])
   const otpRefs = useRef<(HTMLInputElement | null)[]>(Array(6).fill(null))
   const forgotOtpRefs = useRef<(HTMLInputElement | null)[]>(Array(6).fill(null))
+  const [resendDisabled, setResendDisabled] = useState(false)
+  const [isResending, setIsResending] = useState(false)
+  // const initialValues = { email: '', password: '' }
+  // const otpInitialValues = { otp: '' }
+  // const forgotPasswordInitialValues = { email: '' }
+  // const forgotOtpInitialValues = { otp: '' }
+  // const resetPasswordInitialValues = { password: '', confirmPassword: '' }
 
-  // useEffect(() => {
-  //   if (userInfo && userInfo?.user) {
-  //     router.push("/dashboard");
-  //   }
-  // }, []);
+  const onSubmit = async (values: { email: string; password: string }) => {
+    try {
+      const response = await POST('/auth/login', values, '/api')
+      const responseData = response as { data?: { user: any }; message?: string }
 
-  const initialValues = {
-    email: '',
-    password: '',
+      if (!response) {
+        throw new Error(responseData.message || 'Invalid login. Please try again.')
+      }
+
+      const has2FAEnabled = responseData?.data?.user
+
+      if (!has2FAEnabled) {
+        setUserEmail(values.email)
+        setShowOtpForm(true)
+        toast.success('OTP sent to your email!')
+        return
+      }
+
+      router.push('/dashboard')
+      toast.success('Login successful!')
+    } catch (error) {
+      toast.error((error as Error).message || 'An unexpected error occurred.')
+    }
   }
 
-  const otpInitialValues = {
-    otp: '',
-  }
-
-  const forgotPasswordInitialValues = {
-    email: '',
-  }
-
-  const forgotOtpInitialValues = {
-    otp: '',
-  }
-
-  const resetPasswordInitialValues = {
-    password: '',
-    confirmPassword: '',
-  }
-
-  const validationSchema = Yup.object({
-    email: Yup.string().email().required('Email is required'),
-    password: Yup.string()
-      .required('Password is required')
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/,
-        'Must Contain 6 Characters, One Uppercase, One Number and One Special Case Character'
-      ),
-  })
-
-  const otpValidationSchema = Yup.object({
-    otp: Yup.string()
-      .required('OTP is required')
-      .length(6, 'OTP must be 6 digits')
-      .matches(/^\d+$/, 'OTP must contain only numbers'),
-  })
-
-  const forgotPasswordValidationSchema = Yup.object({
-    email: Yup.string().email().required('Email is required'),
-  })
-
-  const resetPasswordValidationSchema = Yup.object({
-    password: Yup.string()
-      .required('Password is required')
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/,
-        'Must Contain 6 Characters, One Uppercase, One Number and One Special Case Character'
-      ),
-    confirmPassword: Yup.string()
-      .required('Confirm Password is required')
-      .oneOf([Yup.ref('password')], 'Passwords must match'),
-  })
-
-  const onSubmit = async (
-    values: { email: string; password: string },
-    actions: { setSubmitting: (isSubmitting: boolean) => void }
-  ) => {
-    setUserEmail(values.email)
-    setShowOtpForm(true)
-    toast.success('OTP sent to your email!')
-    actions.setSubmitting(false)
-  }
-
-  // Fixed handleOtpChange function
   const handleOtpChange = (
     index: number,
     value: string,
     setFieldValue: (field: string, value: string) => void,
     isForForgot = false
   ) => {
-    // Only allow single digit
     if (value.length > 1) return
-
-    // Only allow numbers
     if (value && !/^\d$/.test(value)) return
 
     const currentOtpValues = isForForgot ? forgotOtpValues : otpValues
-    const setOtpValuesFunction = isForForgot ? setForgotOtpValues : setOtpValues // Fixed variable name
+    const setOtpValuesFunction = isForForgot ? setForgotOtpValues : setOtpValues
 
     const newOtpValues = [...currentOtpValues]
     newOtpValues[index] = value
-    setOtpValuesFunction(newOtpValues) // Use the correct setter function
-
-    // Update formik field
+    setOtpValuesFunction(newOtpValues)
     setFieldValue('otp', newOtpValues.join(''))
 
-    // Auto focus next input
     if (value && index < 5) {
       const refs = isForForgot ? forgotOtpRefs : otpRefs
       refs.current[index + 1]?.focus()
     }
   }
 
-  // Fixed handleOtpKeyDown function
   const handleOtpKeyDown = (
     index: number,
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -142,70 +90,74 @@ const SignIn: React.FC = () => {
     const refs = isForForgot ? forgotOtpRefs : otpRefs
     const setOtpValuesFunction = isForForgot ? setForgotOtpValues : setOtpValues
 
-    // Handle backspace
     if (e.key === 'Backspace' && !currentOtpValues[index] && index > 0) {
       refs.current[index - 1]?.focus()
     }
 
-    // Handle paste
     if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault()
       navigator.clipboard.readText().then((text) => {
         const digits = text.replace(/\D/g, '').slice(0, 6)
         const newOtpValues = [...currentOtpValues]
-
         for (let i = 0; i < 6; i++) {
           newOtpValues[i] = digits[i] || ''
         }
-
         setOtpValuesFunction(newOtpValues)
         setFieldValue('otp', newOtpValues.join(''))
-
-        // Focus last filled input or first empty
         const lastIndex = Math.min(digits.length - 1, 5)
         refs.current[lastIndex]?.focus()
       })
     }
   }
 
-  const onOtpSubmit = async (values: { otp: string }, actions: { setSubmitting: (isSubmitting: boolean) => void }) => {
-    setTimeout(() => {
-      if (values.otp === '123456') {
-        localStorage.setItem('userInfo', JSON.stringify({ user: { email: userEmail } }))
+  const onOtpSubmit = async (values: { otp: string }) => {
+    try {
+      localStorage.setItem('userInfo', JSON.stringify({ user: { email: userEmail } }))
+      const response = await POST('/auth/verify-otp', { ...values, email: userEmail }, '/api')
+      if (response && response) {
         router.push('/dashboard')
         toast.success('Login successful!')
       } else {
         toast.error('Invalid OTP. Please try again.')
       }
-      actions.setSubmitting(false)
-    }, 1000)
+    } catch (error) {
+      toast.error('Invalid OTP. Please try again.')
+      console.error('OTP Verification Error:', error)
+    }
   }
 
-  const onForgotPasswordSubmit = async (
-    values: { email: string },
-    actions: { setSubmitting: (isSubmitting: boolean) => void }
-  ) => {
-    setForgotPasswordEmail(values.email)
-    setShowForgotOtpForm(true)
-    toast.success('Reset OTP sent to your email!')
-    actions.setSubmitting(false)
+  const onForgotPasswordSubmit = async (values: { email: string }) => {
+    try {
+      const response = await POST('/auth/sent-otp', values, '/api')
+      if (response) {
+        const msg = (response as any)?.message ?? 'OTP sent to your email successfully.'
+        toast.success(msg)
+        setForgotPasswordEmail(values.email)
+        setShowForgotOtpForm(true)
+      } else {
+        toast.error('Failed to send OTP. Try Again.')
+      }
+    } catch (error) {
+      toast.error('Failed to send OTP. Try Again.')
+    }
   }
 
-  const onForgotOtpSubmit = async (
-    values: { otp: string },
-    actions: { setSubmitting: (isSubmitting: boolean) => void }
-  ) => {
-    setTimeout(() => {
-      if (values.otp === '654321') {
+  const onForgotOtpSubmit = async (values: { otp: string }) => {
+    try {
+      const payload = { ...values, email: forgotPasswordEmail }
+      const response = await POST('/auth/forget-password/verify-otp', payload, '/api')
+      if (response) {
+        const msg = (response as any)?.message ?? 'OTP verified successfully.'
+        toast.success(msg)
         setShowResetPasswordForm(true)
       } else {
         toast.error('Invalid OTP. Please try again.')
       }
-      actions.setSubmitting(false)
-    }, 1000)
+    } catch (error) {
+      toast.error('Invalid OTP. Please try again.')
+    }
   }
 
-  // Improved handleBackToLogin function
   const handleBackToLogin = () => {
     setShowOtpForm(false)
     setShowForgotPasswordForm(false)
@@ -217,25 +169,59 @@ const SignIn: React.FC = () => {
     setForgotOtpValues(['', '', '', '', '', ''])
   }
 
-  // Updated onResetPasswordSubmit function to match backend API
-  const onResetPasswordSubmit = async (
-    _values: { password: string; confirmPassword: string },
-    actions: { setSubmitting: (isSubmitting: boolean) => void }
-  ) => {
-    setTimeout(() => {
-      toast.success('Password reset successfully!')
-      handleBackToLogin()
-      actions.setSubmitting(false)
-    }, 1000)
+  const onResetPasswordSubmit = async (values: { password: string; confirmPassword: string }) => {
+    try {
+      const payload = { newPassword: values.password, email: forgotPasswordEmail }
+      const response = await POST('/auth/forget-password', payload, '/api')
+      if (response) {
+        const msg = (response as any)?.data ?? 'Password reset successfully.'
+        toast.success(msg)
+        handleBackToLogin()
+      } else {
+        toast.error('Failed to reset password. Try Again.')
+      }
+    } catch (error) {
+      toast.error('Failed to reset password. Try Again.')
+    }
   }
 
-  const handleresendOtp = () => {
-    const emailToSend = forgotPasswordEmail || userEmail
-    if (!emailToSend) {
-      toast.error('No email found to resend OTP. Please enter your email.')
-      return
+  const handleresendOtp = async () => {
+    setIsResending(true)
+    setResendDisabled(true)
+
+    try {
+      const emailToSend = forgotPasswordEmail || userEmail
+
+      if (!emailToSend) {
+        toast.error('No email found to resend OTP. Please enter your email.')
+        setIsResending(false)
+        setResendDisabled(false)
+        return
+      }
+
+      const { data, status } = await POST<{ message?: string }>(
+        '/auth/resend-otp',
+        {
+          email: emailToSend,
+          subject: forgotPasswordEmail ? 'Password Reset OTP' : 'Login OTP',
+        },
+        '/api'
+      )
+
+      if (status === 200) {
+        toast.success('OTP resent successfully!')
+      } else {
+        toast.error(data?.message || 'Failed to resend OTP. Please try again.')
+      }
+    } catch (error: any) {
+      toast.error(error?.message || 'Something went wrong while resending OTP.')
     }
-    toast.success('OTP resent successfully!')
+
+    // Keep loader and disabled for 30 seconds
+    setTimeout(() => {
+      setIsResending(false)
+      setResendDisabled(false)
+    }, 30000)
   }
 
   const handleForgotPasswordClick = () => {
@@ -251,307 +237,69 @@ const SignIn: React.FC = () => {
   }
 
   return (
-    <div className="signin-container" style={{ minHeight: '300px' }}>
-      <div
-        className={`form-flip-wrapper flex justify-center items-center ${
-          getCurrentForm() !== 'login' ? 'flipped' : ''
-        }`}
-      >
-        {/* Login Form Side */}
-        <div className="form-side login-side">
-          <Formik
-            enableReinitialize
-            initialValues={initialValues}
-            validationSchema={validationSchema}
+    <div className="w-full h-screen flex bg-white">
+      {/* Left Side - Form */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center px-6 sm:px-12 py-8 overflow-y-auto">
+        {/* Login Form */}
+        {getCurrentForm() === 'login' && (
+          <LoginForm
             onSubmit={onSubmit}
-          >
-            {({ isSubmitting }) => {
-              return (
-                <>
-                  <div className="flex mb-4">
-                    <img src="/mini-logo.png" className="sign-favicon" style={{ width: '60px' }} alt="logo" />
-                  </div>
-
-                  <h1 className="text-blue-700 font-semibold capitalize">Sign In</h1>
-                  <h6 className="font-semibold mb-4">Please sign in to continue.</h6>
-
-                  <Form>
-                    <div className="form-group">
-                      <label>Email</label>
-                      <Field className="form-control" placeholder="Enter your email" type="email" name="email" />
-                      <ErrorMessage name="email" render={(msg) => <small style={{ color: 'red' }}>{msg}</small>} />
-                    </div>
-                    <div className="form-group pt-3">
-                      <label>Password</label>
-                      <Field
-                        className="form-control"
-                        placeholder="Enter your password"
-                        type="password"
-                        name="password"
-                      />
-                      <ErrorMessage name="password" render={(msg) => <small style={{ color: 'red' }}>{msg}</small>} />
-                    </div>
-
-                    <div className="flex justify-end mb-3">
-                      <button
-                        type="button"
-                        className="text-sky-500 hover:underline font-semibold p-0"
-                        onClick={handleForgotPasswordClick}
-                      >
-                        Forgot Password?
-                      </button>
-                    </div>
-
-                    <div className="flex justify-end items-center">
-                      <button
-                        type="submit"
-                        className="btn-blue-color w-full"
-                        disabled={isSubmitting === true ? true : false}
-                      >
-                        {isSubmitting ? 'Signing In...' : 'Sign In'}
-                      </button>
-                    </div>
-                  </Form>
-                </>
-              )
-            }}
-          </Formik>
-        </div>
-
-        {/* Dynamic Form Side */}
-        <div className="form-side otp-side pt-4">
-          {/* Login OTP Form */}
-          {getCurrentForm() === 'otp' && (
-            <Formik
-              enableReinitialize
-              initialValues={otpInitialValues}
-              validationSchema={otpValidationSchema}
-              onSubmit={onOtpSubmit}
-            >
-              {({ isSubmitting, setFieldValue }) => {
-                return (
-                  <Form>
-                    <div className="otp-header text-center mb-4">
-                      <h4>Verify Your Account</h4>
-                      <p className="text-muted mb-0">We&apos;ve sent a 6-digit verification code to</p>
-                      <strong className="text-primary">{userEmail}</strong>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Enter OTP</label>
-                      <div className="otp-inputs-container">
-                        {otpValues.map((value, index) => (
-                          <input
-                            key={index}
-                            ref={(el) => {
-                              if (el) {
-                                otpRefs.current[index] = el
-                              }
-                            }}
-                            type="text"
-                            className="otp-input-box"
-                            value={value}
-                            onChange={(e) => handleOtpChange(index, e.target.value, setFieldValue, false)}
-                            onKeyDown={(e) => handleOtpKeyDown(index, e, setFieldValue, false)}
-                            maxLength={1}
-                            autoComplete="off"
-                          />
-                        ))}
-                      </div>
-                      <Field type="hidden" name="otp" value={otpValues.join('')} />
-                      <ErrorMessage name="otp" render={(msg) => <small style={{ color: 'red' }}>{msg}</small>} />
-                      <div className="text-center mt-3 p-5">
-                        <small className="text-muted me-2">Didn&apos;t receive the email?</small>
-                        <button
-                          type="button"
-                          className="btn btn-link p-0 align-baseline text-primary fw-semibold"
-                          onClick={handleresendOtp}
-                        >
-                          Resend Email
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-column gap-2 my-4">
-                      <button
-                        type="submit"
-                        className="btn-blue-color w-100"
-                        disabled={isSubmitting === true ? true : false}
-                      >
-                        {isSubmitting ? 'Verifying...' : 'Verify OTP'}
-                      </button>
-
-                      <button type="button" className="btn btn-outline-secondary w-100" onClick={handleBackToLogin}>
-                        ← Back to Login
-                      </button>
-                    </div>
-                  </Form>
-                )
-              }}
-            </Formik>
-          )}
-
-          {/* Forgot Password Email Form */}
-          {getCurrentForm() === 'forgot-password' && (
-            <Formik
-              enableReinitialize
-              initialValues={forgotPasswordInitialValues}
-              validationSchema={forgotPasswordValidationSchema}
-              onSubmit={onForgotPasswordSubmit}
-            >
-              {({ isSubmitting }) => (
-                <Form>
-                  <div className="text-center mb-4">
-                    <h4>Forgot Password</h4>
-                    <p className="text-muted">
-                      Enter your email address and we&apos;ll send you an OTP to reset your password.
-                    </p>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Email</label>
-                    <Field className="form-control" placeholder="Enter your email" type="email" name="email" />
-                    <ErrorMessage name="email" render={(msg) => <small style={{ color: 'red' }}>{msg}</small>} />
-                  </div>
-
-                  <div className="flex flex-column gap-2 my-4">
-                    <button
-                      type="submit"
-                      className="btn-blue-color w-100"
-                      disabled={isSubmitting === true ? true : false}
-                    >
-                      {isSubmitting ? 'Sending OTP...' : 'Send OTP'}
-                    </button>
-                    <button type="button" className="btn btn-outline-secondary w-100" onClick={handleBackToLogin}>
-                      ← Back to Login
-                    </button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          )}
-
-          {/* Forgot Password OTP Form */}
-          {getCurrentForm() === 'forgot-otp' && (
-            <Formik
-              enableReinitialize
-              initialValues={forgotOtpInitialValues}
-              validationSchema={otpValidationSchema}
-              onSubmit={onForgotOtpSubmit}
-            >
-              {({ isSubmitting, setFieldValue }) => (
-                <Form>
-                  <div className="otp-header text-center mb-4">
-                    <h4>Verify OTP</h4>
-                    <p className="text-muted mb-0">We&apos;ve sent a 6-digit verification code to</p>
-                    <strong className="text-primary">{forgotPasswordEmail}</strong>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Enter OTP</label>
-                    <div className="otp-inputs-container">
-                      {forgotOtpValues.map((value, index) => (
-                        <input
-                          key={index}
-                          ref={(el) => {
-                            if (el) {
-                              forgotOtpRefs.current[index] = el
-                            }
-                          }}
-                          type="text"
-                          className="otp-input-box"
-                          value={value}
-                          onChange={(e) => handleOtpChange(index, e.target.value, setFieldValue, true)}
-                          onKeyDown={(e) => handleOtpKeyDown(index, e, setFieldValue, true)}
-                          maxLength={1}
-                          autoComplete="off"
-                        />
-                      ))}
-                    </div>
-                    <Field type="hidden" name="otp" value={forgotOtpValues.join('')} />
-                    <ErrorMessage name="otp" render={(msg) => <small style={{ color: 'red' }}>{msg}</small>} />
-                    <div className="text-center mt-3">
-                      <small className="text-muted me-2">Didn&apos;t receive the email?</small>
-                      <button
-                        type="button"
-                        className="btn btn-link p-0 align-baseline text-primary fw-semibold"
-                        onClick={handleresendOtp}
-                      >
-                        Resend Email
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-column gap-2 my-4">
-                    <button
-                      type="submit"
-                      className="btn-blue-color w-100"
-                      disabled={isSubmitting === true ? true : false}
-                    >
-                      {isSubmitting ? 'Verifying...' : 'Verify OTP'}
-                    </button>
-                    <button type="button" className="btn btn-outline-secondary w-100" onClick={handleBackToLogin}>
-                      ← Back to Login
-                    </button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          )}
-
-          {/* Reset Password Form */}
-          {getCurrentForm() === 'reset-password' && (
-            <Formik
-              enableReinitialize
-              initialValues={resetPasswordInitialValues}
-              validationSchema={resetPasswordValidationSchema}
-              onSubmit={onResetPasswordSubmit}
-            >
-              {({ isSubmitting }) => (
-                <Form>
-                  <div className="text-center mb-4">
-                    <h4>Reset Password</h4>
-                    <p className="text-muted">Enter your new password below.</p>
-                  </div>
-
-                  <div className="form-group">
-                    <label>New Password</label>
-                    <Field className="form-control" placeholder="Enter new password" type="password" name="password" />
-                    <ErrorMessage name="password" render={(msg) => <small style={{ color: 'red' }}>{msg}</small>} />
-                  </div>
-
-                  <div className="form-group pt-3">
-                    <label>Confirm Password</label>
-                    <Field
-                      className="form-control"
-                      placeholder="Confirm new password"
-                      type="password"
-                      name="confirmPassword"
-                    />
-                    <ErrorMessage
-                      name="confirmPassword"
-                      render={(msg) => <small style={{ color: 'red' }}>{msg}</small>}
-                    />
-                  </div>
-
-                  <div className="flex flex-column gap-2 my-4">
-                    <button
-                      type="submit"
-                      className="btn-blue-color w-100"
-                      disabled={isSubmitting === true ? true : false}
-                    >
-                      {isSubmitting ? 'Resetting...' : 'Reset Password'}
-                    </button>
-                    <button type="button" className="btn btn-outline-secondary w-100" onClick={handleBackToLogin}>
-                      ← Back to Login
-                    </button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          )}
-        </div>
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            onForgotPasswordClick={handleForgotPasswordClick}
+          />
+        )}
+        {/* OTP Form */}
+        {getCurrentForm() === 'otp' && (
+          <OtpForm
+            onSubmit={onOtpSubmit}
+            onBack={handleBackToLogin}
+            otpValues={otpValues}
+            handleOtpChange={(i, v, setFieldValue) => handleOtpChange(i, v, setFieldValue, false)}
+            handleOtpKeyDown={(i, e, setFieldValue) => handleOtpKeyDown(i, e, setFieldValue, false)}
+            otpRefs={otpRefs}
+            subtitle={
+              <>
+                We sent a code to <strong>{userEmail}</strong>
+              </>
+            }
+            onResend={handleresendOtp}
+            resendDisabled={resendDisabled}
+            isResending={isResending}
+          />
+        )}
+        {/* Forgot Password Form */}
+        {getCurrentForm() === 'forgot-password' && (
+          <ForgotPasswordForm onSubmit={onForgotPasswordSubmit} onBack={handleBackToLogin} />
+        )}
+        {/* Forgot OTP Form */}
+        {getCurrentForm() === 'forgot-otp' && (
+          <OtpForm
+            title="Verify code"
+            onSubmit={onForgotOtpSubmit}
+            onBack={handleBackToLogin}
+            otpValues={forgotOtpValues}
+            handleOtpChange={(i, v, setFieldValue) => handleOtpChange(i, v, setFieldValue, true)}
+            handleOtpKeyDown={(i, e, setFieldValue) => handleOtpKeyDown(i, e, setFieldValue, true)}
+            otpRefs={forgotOtpRefs}
+            subtitle={
+              <>
+                We sent a code to <strong>{forgotPasswordEmail}</strong>
+              </>
+            }
+            onResend={handleresendOtp}
+            resendDisabled={resendDisabled}
+            isResending={isResending}
+          />
+        )}
+        {/* Reset Password Form */}
+        {getCurrentForm() === 'reset-password' && (
+          <ResetPasswordForm onSubmit={onResetPasswordSubmit} onBack={handleBackToLogin} />
+        )}
       </div>
+
+      {/* Right Side - Branding (Hidden on mobile) */}
+      <RightBranding />
     </div>
   )
 }
