@@ -17,7 +17,7 @@ export default async function middleware(request: NextRequest) {
   //   return NextResponse.redirect(new URL('/', request.url))
   // }
 
-  let data: any = null
+  const data: any = null
   // if (authCookie) {
   //   const res = await fetch(`${process.env.PROD_URL}/api/session`, {
   //     headers: {

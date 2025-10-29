@@ -48,7 +48,9 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onSubmit, onBac
 
         <div>
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Reset password</h2>
-          <p className="text-slate-600 text-sm">Enter your email and we'll send you a code to reset your password</p>
+          <p className="text-slate-600 text-sm">
+            Enter your email and we&apos;ll send you a code to reset your password
+          </p>
         </div>
 
         <div>

@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Eye, EyeOff } from 'lucide-react'
-import { useForm, type UseFormReturn, type FieldValues } from 'react-hook-form'
+import { useForm, type UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import FormInput from '../../common/form-inputs/form-inputs'

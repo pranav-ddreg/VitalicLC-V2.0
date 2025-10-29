@@ -122,6 +122,7 @@ const SignIn: React.FC = () => {
       }
     } catch (error) {
       toast.error('Invalid OTP. Please try again.')
+      console.error('OTP Verification Error:', error)
     }
   }
 

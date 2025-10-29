@@ -30,6 +30,10 @@ export default defineConfig([
       'prettier/prettier': 'warn',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      'prefer-const': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'react/no-unescaped-entities': 'warn',
     },
   },
 ])
