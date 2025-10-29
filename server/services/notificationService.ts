@@ -2,12 +2,7 @@ import NotificationCounter from '../model/notificationCounter'
 import Product from '../model/product'
 import Country from '../model/country'
 import Company from '../model/company'
-import { Server as SocketIOServer } from 'socket.io'
-
-// Declare global socket.io instance
-declare global {
-  var io: SocketIOServer
-}
+import { io } from '../server'
 
 // Interface for notification data
 interface NotificationData {
@@ -83,14 +78,14 @@ class NotificationService {
   // Send notification to specific user
   static sendToUser(userId: string, message: string, type: string = 'info', data?: any): void {
     try {
-      if (global.io) {
+      if (io) {
         const notificationData: NotificationData = {
           userId,
           message,
           type,
           data,
         }
-        global.io.to(userId).emit('notification', notificationData)
+        io.to(userId).emit('notification', notificationData)
       }
     } catch (error) {
       console.error('Error sending notification:', error)
@@ -100,14 +95,14 @@ class NotificationService {
   // Broadcast notification to all connected users
   static broadcast(message: string, type: string = 'info', data?: any): void {
     try {
-      if (global.io) {
+      if (io) {
         const notificationData: NotificationData = {
           userId: 'all',
           message,
           type,
           data,
         }
-        global.io.emit('notification', notificationData)
+        io.emit('notification', notificationData)
       }
     } catch (error) {
       console.error('Error broadcasting notification:', error)
