@@ -30,6 +30,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts", "app/bin"],
+  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts", "app/bin", "common/form-inputs"],
   "exclude": ["node_modules", ".next"]
 }

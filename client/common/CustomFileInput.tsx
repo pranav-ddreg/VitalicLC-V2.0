@@ -11,7 +11,6 @@ interface CustomFileInputProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
   height?: string
 }
-
 function CustomFileInput<TFieldValues extends FieldValues>({
   name,
   label,
