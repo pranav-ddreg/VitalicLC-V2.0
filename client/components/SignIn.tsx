@@ -36,7 +36,7 @@ const SignIn: React.FC = () => {
   const onSubmit = async (values: { email: string; password: string }) => {
     try {
       const response = await POST('/auth/login', values, '/api')
-      const responseData = response as { data?: { user: any }; message?: string }
+      const responseData = response as { data?: { user: unknown }; message?: string }
 
       if (!response) {
         throw new Error(responseData.message || 'Invalid login. Please try again.')
@@ -131,7 +131,7 @@ const SignIn: React.FC = () => {
     try {
       const response = await POST('/auth/sent-otp', values, '/api')
       if (response) {
-        const msg = (response as any)?.message ?? 'OTP sent to your email successfully.'
+        const msg = (response as { message?: string })?.message ?? 'OTP sent to your email successfully.'
         toast.success(msg)
         setForgotPasswordEmail(values.email)
         setShowForgotOtpForm(true)
@@ -149,7 +149,7 @@ const SignIn: React.FC = () => {
       const payload = { ...values, email: forgotPasswordEmail }
       const response = await POST('/auth/forget-password/verify-otp', payload, '/api')
       if (response) {
-        const msg = (response as any)?.message ?? 'OTP verified successfully.'
+        const msg = (response as { message?: string })?.message ?? 'OTP verified successfully.'
         toast.success(msg)
         setShowResetPasswordForm(true)
       } else {
@@ -177,7 +177,7 @@ const SignIn: React.FC = () => {
       const payload = { newPassword: values.password, email: forgotPasswordEmail }
       const response = await POST('/auth/forget-password', payload, '/api')
       if (response) {
-        const responseData = response as any
+        const responseData = response as { message?: string; data?: { data?: string } }
         const msg = responseData?.message || responseData?.data?.data || 'Password reset successfully.'
         toast.success(msg)
         handleBackToLogin()
@@ -218,8 +218,12 @@ const SignIn: React.FC = () => {
       } else {
         toast.error(data?.message || 'Failed to resend OTP. Please try again.')
       }
-    } catch (error: any) {
-      toast.error(error?.message || 'Something went wrong while resending OTP.')
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message || 'Something went wrong while resending OTP.')
+      } else {
+        toast.error('Something went wrong while resending OTP.')
+      }
     }
 
     // Keep loader and disabled for 30 seconds

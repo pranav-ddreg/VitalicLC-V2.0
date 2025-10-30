@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { camelCase } from '@/utils/ChangeStringCasing'
@@ -27,30 +27,33 @@ const ExportSelectedFields: React.FC<ExportSelectedFieldsProps> = ({
   const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>({})
   const [checkAll, setCheckAll] = useState(true)
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target
+    setSelectedFields((prev) => ({ ...prev, [name]: checked }))
+  }
+
+  const handleCheckAll = useCallback(
+    (checked: boolean) => {
+      const updated: Record<string, boolean> = {}
+      columns.forEach((col) => {
+        if (col?.export !== false) updated[col.key || col.name] = checked
+      })
+      setSelectedFields(updated)
+      setCheckAll(checked)
+    },
+    [columns]
+  )
+
   // Initialize selected fields when modal opens
   useEffect(() => {
     if (showExportModal) handleCheckAll(true)
-  }, [showExportModal])
+  }, [showExportModal, handleCheckAll])
 
   // Update "Check All" if all individual fields are selected
   useEffect(() => {
     const allSelected = Object.values(selectedFields).every(Boolean)
     setCheckAll(allSelected)
   }, [selectedFields])
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target
-    setSelectedFields((prev) => ({ ...prev, [name]: checked }))
-  }
-
-  const handleCheckAll = (checked: boolean) => {
-    const updated: Record<string, boolean> = {}
-    columns.forEach((col) => {
-      if (col?.export !== false) updated[col.key || col.name] = checked
-    })
-    setSelectedFields(updated)
-    setCheckAll(checked)
-  }
 
   const handleDownload = async (type: 'pdf' | 'xlsx') => {
     const fields = Object.keys(selectedFields).filter((key) => selectedFields[key])

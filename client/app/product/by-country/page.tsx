@@ -1,12 +1,15 @@
-'use client'
+import React, { Suspense } from 'react'
+import Product from '@/components/by-country/page'
+export const metadata = {
+  title: 'Products by Country - Vitalic LC',
+  description: '',
+}
 
-import React from 'react'
-
-const ProductByCountry: React.FC = () => {
+const page = () => {
   return (
-    <div>
-      <h1> Product By Country</h1>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Product />
+    </Suspense>
   )
 }
-export default ProductByCountry
+export default page

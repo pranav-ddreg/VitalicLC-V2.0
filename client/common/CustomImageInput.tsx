@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import Image from 'next/image'
 import { Controller, Control, FieldValues, Path } from 'react-hook-form'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { BsCloudUpload } from 'react-icons/bs'
@@ -73,10 +74,12 @@ function CustomImageInput<TFieldValues extends FieldValues>({
               />
 
               {value ? (
-                <img
+                <Image
                   src={typeof value === 'string' ? value : URL.createObjectURL(value)}
                   alt="preview"
-                  className="h-full w-auto object-contain"
+                  unoptimized
+                  fill
+                  style={{ objectFit: 'contain' }}
                 />
               ) : (
                 <div className="flex flex-col justify-center items-center text-gray-500">

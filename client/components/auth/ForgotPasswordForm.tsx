@@ -21,7 +21,7 @@ type ForgotPasswordFormProps = {
 
 const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onSubmit, onBack }) => {
   const methods: UseFormReturn<FormValues> = useForm<FormValues>({
-    resolver: zodResolver<any>(schema),
+    resolver: zodResolver(schema),
     defaultValues: { email: '' },
     mode: 'onChange',
   })

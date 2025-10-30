@@ -116,9 +116,7 @@ export const useColumns = () => {
       },
       {
         accessorKey: 'remark',
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Remark   " className="text-neutral-500" />
-        ),
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Remark" className="text-neutral-500" />,
         cell: ({ row }) => (
           <div className="w-[130px] flex gap-2 py-2">
             <span>{String(row?.original?.deletedBy?.time ? moment(row?.original?.remark).format('LLL') : 'N/A')}</span>

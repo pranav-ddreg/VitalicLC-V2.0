@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Control, FieldValues, FieldPath } from 'react-hook-form'
+import { Control, FieldValues, FieldPath, SubmitHandler, UseFormHandleSubmit } from 'react-hook-form'
 import CustomInput from './CustomInput'
 import CustomImageInput from './CustomImageInput'
 import CustomFileInput from './CustomFileInput'
@@ -16,7 +16,7 @@ interface Field<TFieldValues extends FieldValues = FieldValues> {
   placeholder?: string
   type?: string
   options?: Record<string, unknown>[] // raw options
-  fieldType?: 'select' | 'multiselect' | 'image' | 'file' | 'textarea' | 'text'
+  fieldType?: 'select' | 'multiselect' | 'image' | 'file' | 'textarea' | 'text' | 'date'
   matchField?: string
   renderField?: string | ((option: Record<string, unknown>) => React.ReactElement)
   defaultValue?: string[]
@@ -30,7 +30,8 @@ interface Field<TFieldValues extends FieldValues = FieldValues> {
 
 interface CustomFormProps<TFieldValues extends FieldValues> {
   onReset?: () => void
-  onSubmit: React.FormEventHandler<HTMLFormElement>
+  onSubmit?: SubmitHandler<TFieldValues>
+  handleSubmit?: UseFormHandleSubmit<TFieldValues>
   control: Control<TFieldValues>
   mode: 'add' | 'edit'
   isSubmitting?: boolean
@@ -43,6 +44,7 @@ interface CustomFormProps<TFieldValues extends FieldValues> {
 function CustomForm<TFieldValues extends FieldValues>({
   onReset,
   onSubmit,
+  handleSubmit,
   control,
   mode,
   isSubmitting = false,
@@ -58,8 +60,10 @@ function CustomForm<TFieldValues extends FieldValues>({
     sm: 'md:w-full',
   }
 
+  const submitHandler = onSubmit && handleSubmit ? handleSubmit(onSubmit) : undefined
+
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={submitHandler}>
       <div className="flex flex-wrap -mx-2">
         {fields?.map((field) =>
           field.display === false ? null : (

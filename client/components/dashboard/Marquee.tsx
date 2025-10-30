@@ -54,6 +54,7 @@ const Marquee: React.FC<MarqueeProps> = ({
       if (!isHovered) startLoop(-textWidth)
     }
     return () => stopLoop()
+    // eslint-disable-next-line
   }, [textWidth, containerWidth])
 
   // Pause/resume on hover if enabled
@@ -63,6 +64,7 @@ const Marquee: React.FC<MarqueeProps> = ({
     } else if (textWidth > 0 && containerWidth > 0) {
       startLoop(currentX)
     }
+    // eslint-disable-next-line
   }, [isHovered, pauseOnHover])
 
   // Animation loop

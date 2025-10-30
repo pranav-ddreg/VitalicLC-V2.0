@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react'
 
 type OTPInputProps = {
-  name: string
+  // name: string
   values: string[]
   setFieldValue: (field: string, value: string) => void
   onChange: (index: number, value: string, setFieldValue: (field: string, value: string) => void) => void
@@ -15,7 +15,7 @@ type OTPInputProps = {
   inputRefs: React.MutableRefObject<(HTMLInputElement | null)[]>
 }
 
-const OTPInput: React.FC<OTPInputProps> = ({ name, values, setFieldValue, onChange, onKeyDown, inputRefs }) => {
+const OTPInput: React.FC<OTPInputProps> = ({ values, setFieldValue, onChange, onKeyDown, inputRefs }) => {
   // ensure refs length equals values length
   const ensuredRefs = useRef(false)
   useEffect(() => {

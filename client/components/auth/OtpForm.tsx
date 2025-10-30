@@ -45,7 +45,7 @@ const OtpForm: React.FC<OtpFormProps> = ({
   isResending = false,
 }) => {
   const { handleSubmit, setValue, formState } = useForm<OtpFormValues>({
-    resolver: zodResolver<any>(schema),
+    resolver: zodResolver(schema),
     defaultValues: { otp: '' },
     mode: 'onChange',
   })
@@ -71,9 +71,8 @@ const OtpForm: React.FC<OtpFormProps> = ({
       </div>
 
       <OTPInput
-        name="otp"
         values={otpValues}
-        setFieldValue={(field, value) => setValue(field as any, value)}
+        setFieldValue={(field, value) => setValue('otp' as keyof OtpFormValues, value)}
         onChange={handleOtpChange}
         onKeyDown={handleOtpKeyDown}
         inputRefs={otpRefs}

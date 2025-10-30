@@ -1,13 +1,24 @@
-'use client'
-
+import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
 import React from 'react'
+import Header from '@/common/header'
+import { Suspense } from 'react'
+import CompanyTable from '@/components/admin-tools/company/company-table'
 
-const Company: React.FC = () => {
+function page() {
   return (
-    <div>
-      <h1>Company</h1>
-    </div>
+    <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CustomBreadcrumbs
+          list={[
+            { name: 'Dashboard', link: '/dashboard' },
+            { name: 'Company', link: '' },
+          ]}
+        />
+        <Header title={'Company'} />
+        <CompanyTable />
+      </Suspense>
+    </>
   )
 }
 
-export default Company
+export default page

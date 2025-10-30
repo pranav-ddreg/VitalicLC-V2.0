@@ -33,7 +33,7 @@ type ResetPasswordFormProps = {
 
 const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onSubmit, onBack }) => {
   const methods: UseFormReturn<FormValues> = useForm<FormValues>({
-    resolver: zodResolver<any>(schema),
+    resolver: zodResolver(schema),
     defaultValues: { password: '', confirmPassword: '' },
     mode: 'onChange',
   })

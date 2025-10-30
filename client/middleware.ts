@@ -20,6 +20,7 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let data: any = null
   let isAuthenticated = false
 

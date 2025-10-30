@@ -118,7 +118,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
           isSubmitting={isSubmitting}
           fields={fields}
           showSubmitBtn={true}
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={onSubmit}
+          handleSubmit={handleSubmit}
         />
       }
       size="md"
