@@ -1,7 +1,6 @@
 'use client'
-
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { BsSearch } from 'react-icons/bs'
 import { GoStack } from 'react-icons/go'
 import { MdDeleteOutline } from 'react-icons/md'
@@ -15,9 +14,6 @@ import CustomConfirm from '@/common/CustomConfirm'
 import ProductForm from '@/components/by-country/productForm'
 import ProductInfoForm from './productInfoForm'
 import type { ProductFormData } from '@/components/by-country/productForm'
-// import { SWRInfiniteKeyedMutator } from 'swr/infinite'
-// import CheckSuperAdmin from '@/middleware/CheckSuperAdmin'
-// import CheckPermissions from '@/middleware/CheckPermissions'
 
 // Type for pagination items
 interface PaginationItem {
@@ -51,10 +47,15 @@ interface FormPreRegistration {
 // }
 
 const ProductInfo: React.FC = () => {
+  const { productId } = useParams()
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const countryId = searchParams.get('countryId') || ''
+  if (!productId || typeof productId !== 'string') {
+    return null
+  }
+
+  const countryId = productId
   const [sortBy, setSortBy] = useState(searchParams.get('order') || '')
   const [query, setQuery] = useState(searchParams.get('search') || '')
   const searchQuery = useDebounce(query, 500)
@@ -65,7 +66,7 @@ const ProductInfo: React.FC = () => {
   const [confirmModal, setConfirmModal] = useState(false)
   const [id, setId] = useState<string | null>(null)
   const [limit] = useState(12)
-  const [productId, setProductId] = useState<string | null>(null)
+  const [addProductId, setAddProductId] = useState<string | null>(null)
 
   const [showProductInfoModal, setShowProductInfoModal] = useState(false)
   const [productInfoMode, setProductInfoMode] = useState<'add' | 'edit'>('add')
@@ -89,15 +90,15 @@ const ProductInfo: React.FC = () => {
     mutate,
   } = usePagination<PaginationItem, PaginationInfo>(apiUrl, 'country')
 
-  // Open ProductInfoForm when productId is set
+  // Open ProductInfoForm when addProductId is set
   useEffect(() => {
-    if (productId) {
+    if (addProductId) {
       setProductInfoMode('add')
       setProductInfoData(null)
       setProductInfoId(null)
       setShowProductInfoModal(true)
     }
-  }, [productId])
+  }, [addProductId])
 
   const handleDeleteClick = (event: React.MouseEvent, preRegistrationId: string) => {
     event.stopPropagation()
@@ -157,7 +158,7 @@ const ProductInfo: React.FC = () => {
         data={productFormData}
         setData={setProductFormData}
         productId={productId}
-        setProductId={setProductId}
+        setProductId={setAddProductId}
       />
 
       <ProductInfoForm
@@ -173,7 +174,7 @@ const ProductInfo: React.FC = () => {
         countryId={countryId}
         addProductId={productId}
         productId={productId}
-        setProductId={setProductId}
+        setProductId={setAddProductId}
       />
 
       <CustomBreadcrumbs
@@ -227,7 +228,7 @@ const ProductInfo: React.FC = () => {
               ref={list.length === index + 1 ? lastElementRef : null}
               whileHover={{ scale: 1.05 }}
               className="bg-white shadow rounded p-4 flex flex-col justify-between cursor-pointer"
-              onClick={() => router.push(`/by-countries/${item.product?._id}/${item._id}`)}
+              onClick={() => router.push(`/product/by-country/${countryId}/${item._id}`)}
             >
               <div className="flex items-start gap-2">
                 <GoStack size={20} className="text-orange-500" />

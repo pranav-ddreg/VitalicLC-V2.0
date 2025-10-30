@@ -1,13 +1,24 @@
-'use client'
-
+import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
 import React from 'react'
+import Header from '@/common/header'
+import { Suspense } from 'react'
+import VariationTable from '@/components/variation/variation-table'
 
-const Variation: React.FC = () => {
+function page() {
   return (
-    <div>
-      <h1>Variation</h1>
-    </div>
+    <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CustomBreadcrumbs
+          list={[
+            { name: 'Dashboard', link: '/dashboard' },
+            { name: 'Variation', link: '' },
+          ]}
+        />
+        <Header title={'Variation'} />
+        <VariationTable />
+      </Suspense>
+    </>
   )
 }
 
-export default Variation
+export default page

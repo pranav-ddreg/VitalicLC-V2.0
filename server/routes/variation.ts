@@ -9,6 +9,7 @@ router.put('/submit', middleware.checkToken, variationController.submitVariation
 router.put('/update/:id', middleware.checkToken, variationController.updateVariation)
 router.delete('/delete/:id', middleware.checkToken, variationController.deleteVariation)
 router.get('/', middleware.checkToken, variationController.getallVariation)
+router.get('/:id', middleware.checkToken, variationController.getVariationByProductId)
 router.get('/byProduct/:productId', middleware.checkToken, variationController.getVariationByProductId)
 router.post('/calculate', middleware.checkToken, variationController.calculate)
 

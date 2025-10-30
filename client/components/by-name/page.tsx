@@ -35,26 +35,38 @@ const Product: React.FC = () => {
   const [query, setQuery] = useState<string>(searchParams.get('search') || '')
   const searchQuery = useDebounce(query, 500)
   const [mode, setMode] = useState<'add' | 'edit'>('add')
-  const [rowData, setRowData] = useState<Partial<ProductFormValues> | null>(null) // ✅ fixed type
+  const [rowData, setRowData] = useState<Partial<ProductFormValues> | null>(null)
   const [showModal, setShowModal] = useState(false)
   const [confirmModal, setConfirmModal] = useState(false)
   const [id, setId] = useState<string | null>(null)
-  const superAdmin = true // ✅ simplified
+  const superAdmin = true
   const [showSortDropdown, setShowSortDropdown] = useState<boolean>(false)
-  const apiUrl = `/api/product/get?limit=12&search=${searchQuery}&order=${sortBy}&sort=${sortBy === '' ? '' : 'title'}`
+
+  const queryParams = new URLSearchParams({
+    limit: '12',
+    search: searchQuery,
+    ...(sortBy && { order: sortBy, sort: 'title' }),
+  })
+
+  const apiUrl = `/api/product/get?${queryParams.toString()}`
   const { list, isReachingEnd, isLoading, loadingMore, size, setSize, mutate } = usePagination(apiUrl)
+
   const handleEdit = (event: React.MouseEvent, row: ProductType) => {
     event.stopPropagation()
     setId(row._id)
     setMode('edit')
-    setRowData({ title: row.title }) // ✅ only send form fields
+    setRowData({ title: row.title })
     setShowModal(true)
   }
+
   const handleDeleteClick = (event: React.MouseEvent, productId: string) => {
     event.stopPropagation()
     setId(productId)
     setConfirmModal(true)
   }
+
+  // console.log(id)
+
   const handleDelete = async () => {
     if (!id) return
     try {
@@ -70,17 +82,18 @@ const Product: React.FC = () => {
       }
     }
   }
-  const lastElementRef = useRef<IntersectionObserver | null>(null)
+
+  const observer = useRef<IntersectionObserver | null>(null)
   const handleLastElement = useCallback(
     (node: HTMLDivElement | null) => {
       if (loadingMore) return
-      if (lastElementRef.current) lastElementRef.current.disconnect()
-      lastElementRef.current = new IntersectionObserver((entries) => {
+      if (observer.current) observer.current.disconnect()
+      observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && !isReachingEnd) {
           setSize(size + 1)
         }
       })
-      if (node) lastElementRef.current.observe(node)
+      if (node) observer.current.observe(node)
     },
     [loadingMore, isReachingEnd, setSize, size]
   )
@@ -140,6 +153,8 @@ const Product: React.FC = () => {
           </button>
         )}
       </div>
+
+      {/* Search + Sort */}
       <div className="mb-4">
         <div className="relative mb-2">
           <span className="absolute left-0 py-2 pl-2 pr-2">
@@ -198,6 +213,8 @@ const Product: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Product Grid */}
       {Array.isArray(list) && list.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
           {(list as ProductType[]).map((product, index) => (
@@ -208,7 +225,7 @@ const Product: React.FC = () => {
             >
               <div
                 className="shadow p-4 rounded h-full flex flex-col justify-between cursor-pointer"
-                onClick={() => router.push(`/products/${product._id}`)}
+                onClick={() => router.push(`/product/by-name/${product._id}`)}
               >
                 <div className="flex justify-between items-start gap-1">
                   <span className="text-orange-500 rounded-full">

@@ -1,13 +1,24 @@
-'use client'
-
+import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
 import React from 'react'
+import Header from '@/common/header'
+import { Suspense } from 'react'
+import RenewalTable from '@/components/renewal/renewal-table'
 
-const Renewal: React.FC = () => {
+function page() {
   return (
-    <div>
-      <h1>Renewal</h1>
-    </div>
+    <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CustomBreadcrumbs
+          list={[
+            { name: 'Dashboard', link: '/dashboard' },
+            { name: 'Renewal', link: '' },
+          ]}
+        />
+        <Header title={'Renewal'} />
+        <RenewalTable />
+      </Suspense>
+    </>
   )
 }
 
-export default Renewal
+export default page
