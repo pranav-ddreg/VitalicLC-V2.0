@@ -10,7 +10,7 @@ const compat = new FlatCompat()
 
 export default defineConfig([
   {
-    ignores: ['node_modules', '.next', 'dist', 'next-env.d.ts', 'out', 'build', '*.log', '.DS_Store'],
+    ignores: ['node_modules', '.next', 'dist', 'next-env.d.ts', 'out', 'build', '*.log', '.DS_Store', 'public'],
   },
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],

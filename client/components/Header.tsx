@@ -5,8 +5,8 @@ import Image from 'next/image'
 import { FaBars, FaCompress, FaExpand } from 'react-icons/fa'
 import { FiSearch } from 'react-icons/fi'
 import { toggleFullScreen } from '../utils/ToggleFullScreen'
-import logo from '@/public/logoFull.png'
-import logoSmall from '@/public/mini-logo.png'
+import logo from '@/public/logo-1.png'
+import logoSmall from '@/public/mini-logo-1.png'
 
 // ✅ Props from parent layout
 interface HeaderProps {
