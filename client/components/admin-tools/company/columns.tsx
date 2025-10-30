@@ -1,26 +1,21 @@
 import { DataTableColumnHeader } from '@/common/table/data-table-column-header'
 import React from 'react'
 import { ColumnDef } from '@tanstack/react-table'
-// import moment from 'moment'
+import moment from 'moment'
 
 type RowData = {
   id?: string | number
-  role?: {
-    title?: string
+  logo?: {
+    Location?: string
   }
-  company?: {
-    title?: string
+  title?: string
+  email?: string
+  secondaryEmail?: string
+  plan?: {
+    plan?: string
   }
-  deletedBy?: {
-    user?: {
-      fullName?: string
-    }
-    time?: Date
-  }
-  product?: {
-    title?: string
-  }
-  permission?: string | unknown
+  purchasedOn?: string | Date
+  expiredOn?: string | Date
   [key: string]: unknown
 }
 
@@ -28,8 +23,20 @@ export const useColumns = () => {
   return React.useMemo<ColumnDef<RowData, unknown>[]>(
     () => [
       {
+        accessorKey: 'logo',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Logo" className="text-neutral-500" />,
+        cell: ({ row }) => (
+          <div className="w-[200px] flex gap-2 py-2">
+            <img src={String(row?.original?.logo?.Location)} alt="Company Logo" width="50" height="50" />
+          </div>
+        ),
+        enableSorting: true,
+        enableHiding: true,
+      },
+
+      {
         accessorKey: 'title',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Role" className="text-neutral-500" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Company" className="text-neutral-500" />,
         cell: ({ row }) => (
           <div className="w-[200px] flex gap-2 py-2">
             <span>{String(row?.original?.title)}</span>
@@ -40,30 +47,69 @@ export const useColumns = () => {
       },
 
       {
-        accessorKey: 'company',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Company" className="text-neutral-500" />,
+        accessorKey: 'email',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Email" className="text-neutral-500" />,
         cell: ({ row }) => (
           <div className="w-[130px] flex gap-2 py-2">
-            <span>{String(row?.original?.company?.title)}</span>
+            <span>{String(row?.original?.email)}</span>
           </div>
         ),
         enableSorting: true,
         enableHiding: true,
       },
       {
-        accessorKey: 'permissions',
+        accessorKey: 'secondaryEmail',
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Permissions" className="text-neutral-500" />
+          <DataTableColumnHeader column={column} title="Secondary Email" className="text-neutral-500" />
         ),
         cell: ({ row }) => (
           <div className="w-[130px] flex gap-2 py-2">
-            <span>{String(row?.original?.permissions)}</span>
+            <span>{String(row?.original?.secondaryEmail ? row?.original?.secondaryEmail : 'N/A')}</span>
           </div>
         ),
         enableSorting: true,
         enableHiding: true,
       },
 
+      {
+        accessorKey: 'plan',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Plan" className="text-neutral-500" />,
+        cell: ({ row }) => (
+          <div className="w-[130px] flex gap-2 py-2">
+            <span>{String(row?.original?.plan?.plan)}</span>
+          </div>
+        ),
+        enableSorting: true,
+        enableHiding: true,
+      },
+
+      {
+        accessorKey: 'purchasedOn',
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Purchased On" className="text-neutral-500" />
+        ),
+        cell: ({ row }) => (
+          <div className="w-[130px] flex gap-2 py-2">
+            <span>{String(row?.original?.purchasedOn ? moment(row?.original?.purchasedOn).format('L') : 'N/A')}</span>
+          </div>
+        ),
+        enableSorting: true,
+        enableHiding: true,
+      },
+
+      {
+        accessorKey: 'expiredOn',
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Expired On" className="text-neutral-500" />
+        ),
+        cell: ({ row }) => (
+          <div className="w-[130px] flex gap-2 py-2">
+            <span>{String(row?.original?.expiredOn ? moment(row?.original?.expiredOn).format('L') : 'N/A')}</span>
+          </div>
+        ),
+        enableSorting: true,
+        enableHiding: true,
+      },
       {
         accessorKey: 'action',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Action" className="text-neutral-500" />,
