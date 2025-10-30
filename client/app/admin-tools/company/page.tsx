@@ -11,10 +11,10 @@ function page() {
         <CustomBreadcrumbs
           list={[
             { name: 'Dashboard', link: '/dashboard' },
-            { name: 'Roles', link: '' },
+            { name: 'Company', link: '' },
           ]}
         />
-        <Header title={'Roles'} />
+        <Header title={'Company'} />
         <CompanyTable />
       </Suspense>
     </>

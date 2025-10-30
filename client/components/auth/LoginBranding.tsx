@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
-// import Image from 'next/image'
-// import Logo from '@/public/logoFull.png'
+import Image from 'next/image'
+import Logo from '@/public/logo.png'
 import { motion } from 'framer-motion'
 
 const LoginBranding: React.FC = () => (
@@ -288,7 +288,7 @@ const LoginBranding: React.FC = () => (
               filter: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
             }}
           >
-            {/* <Image src={Logo} alt="Logo" width={180} height={60} unoptimized={true} /> */}
+            <Image src={Logo} alt="Logo" width={180} height={60} unoptimized={true} />
           </motion.div>
         </motion.div>
       </motion.div>

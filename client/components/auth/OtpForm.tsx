@@ -45,7 +45,7 @@ const OtpForm: React.FC<OtpFormProps> = ({
   isResending = false,
 }) => {
   const { handleSubmit, setValue, formState } = useForm<OtpFormValues>({
-    resolver: zodResolver<any>(schema),
+    resolver: zodResolver(schema),
     defaultValues: { otp: '' },
     mode: 'onChange',
   })

@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {/* Main layout with Sidebar + Content */}
               <div className="flex h-[calc(100vh-56px)]">
                 {open && (
-                  <div className="w-64 h-full flex-shrink-0">
+                  <div className="w-64 h-full shrink-0">
                     <Sidebar open={open} />
                   </div>
                 )}

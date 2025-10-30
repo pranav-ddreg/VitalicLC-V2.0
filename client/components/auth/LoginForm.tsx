@@ -33,8 +33,8 @@ type LoginFormProps = {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, showPassword, setShowPassword, onForgotPasswordClick }) => {
   const methods: UseFormReturn<LoginFormValues> = useForm<LoginFormValues>({
-    defaultValues: { email: '', password: '' },
-    resolver: zodResolver<any>(schema),
+    defaultValues: { email: '', password: '', keepLoggedIn: false },
+    resolver: zodResolver(schema),
     mode: 'onChange',
   })
 

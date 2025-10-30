@@ -11,8 +11,8 @@ package-lock.json
 **/.qodo/
 
 # Planing Supliments
-plans/
-**/plans/
+keep/
+**/keep/
 
 # Production builds
 build/
