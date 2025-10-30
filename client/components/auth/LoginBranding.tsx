@@ -5,12 +5,12 @@ import Logo from '@/public/logoFull.png'
 import { motion } from 'framer-motion'
 
 const LoginBranding: React.FC = () => (
-  <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-indigo-900 via-blue-800 to-slate-900 flex-col items-center justify-center px-12 relative overflow-hidden">
+  <div className="hidden lg:flex w-1/2 bg-linear-to-br from-indigo-900 via-blue-800 to-slate-900 flex-col items-center justify-center px-12 relative overflow-hidden">
     {/* Animated Background Elements */}
     <div className="absolute inset-0 overflow-hidden">
       {/* Floating Pills/Capsules with Enhanced Glowing Effects */}
       <motion.div
-        className="absolute top-20 left-20 w-4 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full opacity-70"
+        className="absolute top-20 left-20 w-4 h-8 bg-linear-to-r from-purple-500 to-pink-500 rounded-full opacity-70"
         animate={{
           y: [0, -15, 0, -8, 0],
           scale: [1, 1.2, 1, 1.1, 1],
@@ -27,7 +27,7 @@ const LoginBranding: React.FC = () => (
         }}
       />
       <motion.div
-        className="absolute top-40 right-32 w-3 h-6 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full opacity-60"
+        className="absolute top-40 right-32 w-3 h-6 bg-linear-to-r from-cyan-400 to-blue-500 rounded-full opacity-60"
         animate={{
           y: [0, 15, 0],
           rotate: [0, -180, -360],
@@ -45,7 +45,7 @@ const LoginBranding: React.FC = () => (
         }}
       />
       <motion.div
-        className="absolute bottom-32 left-40 w-5 h-10 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full opacity-50"
+        className="absolute bottom-32 left-40 w-5 h-10 bg-linear-to-r from-emerald-400 to-teal-500 rounded-full opacity-50"
         animate={{
           y: [0, -25, 0],
           rotate: [0, 360, 720],
