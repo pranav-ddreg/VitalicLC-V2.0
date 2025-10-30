@@ -137,7 +137,7 @@ export default {
   },
 
   //--------------Get All Products-----------------------//
-  getAllProduct: async (req: RequestWithUser, res: Response): Promise<Response> => {
+  getAllProduct: async (req: RequestWithUser, res: Response): Promise<void> => {
     try {
       const { searchTitle, search, page, limit, sort, order } = req.query
       let title: string = searchTitle ? (searchTitle as string) : 'title'
@@ -212,13 +212,11 @@ export default {
       ])
 
       products.exec(async (error, result) => {
-        if (result) return res.status(200).json({ code: 'FETCHED', data: result[0] || {} })
-        else return res.status(400).json({ code: 'ERROROCCURED', message: error })
+        if (result) res.status(200).json({ code: 'FETCHED', data: result[0] || {} })
+        else res.status(400).json({ code: 'ERROROCCURED', message: error })
       })
-
-      return res.status(200).end()
     } catch (error) {
-      return res.status(400).json({
+      res.status(400).json({
         code: 'ERROROCCURED',
         data: error,
       })

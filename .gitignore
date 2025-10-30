@@ -3,10 +3,16 @@ node_modules/
 **/node_modules/
 yarn.lock.backup
 package-lock.json.backup
+yarn.lock
+package-lock.json
 
 # AI assistant directories
 .qodo/
 **/.qodo/
+
+# Planing Supliments
+plans/
+**/plans/
 
 # Production builds
 build/
@@ -147,11 +153,11 @@ test-results/
 junit.xml
 
 # Screenshots and media for tests
-**/screenshots/
-**/*.png
-**/*.jpg
-**/*.jpeg
-**/*.gif
+# **/screenshots/
+# **/*.png
+# **/*.jpg
+# **/*.jpeg
+# **/*.gif
 
 # Local development
 .local

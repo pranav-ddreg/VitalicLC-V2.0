@@ -8,7 +8,7 @@ import VariationHistoryTable from '@/components/variation/variationHistory'
 import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
 import PreRegistration from '@/components/pre-registration/pre-registration'
 import RenewalHistoryTable from '@/components/renewal/renewalHistory'
-import { RenewalForm } from '@/components/renewal/renewalForm'
+// import { RenewalForm } from '@/components/renewal/renewalForm'
 interface Country {
   _id?: string
   title?: string
@@ -110,7 +110,7 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      <RenewalForm
+      {/* <RenewalForm
         showModal={showRenewalModal}
         setShowModal={setShowRenewalModal}
         mode={renewalMode}
@@ -122,7 +122,7 @@ export default function ProductDetails() {
         mutate={() => {
           // Could trigger refresh of RenewalHistoryTable if needed
         }}
-      />
+      /> */}
     </div>
   )
 }

@@ -113,7 +113,7 @@ export const loginNotificationEmail = async (detail: LoginDetail): Promise<void>
     let mailDetails = {
       from: process.env.NODEMAILER_COMPANY_EMAIL,
       to: detail?.recipientEmail,
-      bcc: process.env.ENV_STATUS === 'development' ? 'pranav.c@ddreg.in' : 'it@ddreg.in',
+      // bcc: process.env.ENV_STATUS === 'development' ? 'pranav.c@ddreg.in' : 'it@ddreg.in',
       subject: subject,
       html: template,
     }
@@ -282,7 +282,7 @@ export const sendOtpEmail = async (detail: OtpDetail): Promise<boolean> => {
     const mailDetails = {
       from: process.env.NODEMAILER_COMPANY_EMAIL,
       to: recipientEmail,
-      bcc: process.env.ENV_STATUS === 'development' ? 'divyansh.t@ddreg.in' : 'it@ddreg.in',
+      // bcc: process.env.ENV_STATUS === 'development' ? 'pranav.c@ddreg.in' : 'it@ddreg.in',
       subject,
       html,
       text,

@@ -52,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
 
   return (
     <div
-      className={`w-64 h-full bg-gradient-to-b from-sky-50 to-sky-100 text-black flex flex-col justify-between p-4 overflow-y-auto transition-all duration-300 ${
+      className={`w-64 h-full bg-linear-to-b from-sky-50 to-sky-100 text-black flex flex-col justify-between p-4 overflow-y-auto transition-all duration-300 ${
         open ? 'block' : 'hidden md:block'
       }`}
     >

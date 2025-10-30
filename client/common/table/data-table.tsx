@@ -20,6 +20,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 import { DataTablePagination } from './data-table-pagination'
 import { DataTableToolbar } from './data-table-toolbar'
+import { Spinner } from '@/components/ui/spinner'
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData, unknown>[]
@@ -50,6 +51,7 @@ interface DataTableProps<TData> {
   folderName?: string
   showSearch?: boolean
   showView?: boolean
+  export?: () => void
 }
 
 export function DataTable<TData>({
@@ -74,6 +76,7 @@ export function DataTable<TData>({
   folderName,
   showSearch = true,
   showView = true,
+  export: exportData,
 }: DataTableProps<TData>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] = React.useState({})
@@ -105,7 +108,6 @@ export function DataTable<TData>({
     enableRowSelection: true,
     manualPagination: true,
     onPaginationChange: setPagination,
-    onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -140,16 +142,26 @@ export function DataTable<TData>({
         query={query || ''}
         setQuery={setQuery || ((query: string) => console.log(query))}
         facetedFilters={facetedFilters}
+        export={exportData}
       />
-      <div className="rounded-md overflow-hidden  bg-white dark:bg-neutral-800 border dark:border-neutral-700">
+      <div className="rounded-lg overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-sm">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-sky-100 dark:bg-neutral-800">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {pagination && <TableHead className="text-neutral-500">S.no</TableHead>}
+              <TableRow
+                key={headerGroup.id}
+                className="border-b border-sky-100 dark:border-neutral-600  hover:bg-transparent"
+              >
+                {pagination && (
+                  <TableHead className="font-semibold text-neutral-800 dark:text-neutral-200">S.no</TableHead>
+                )}
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
+                    <TableHead
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      className="font-semibold text-neutral-800 dark:text-neutral-200"
+                    >
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   )
@@ -160,17 +172,34 @@ export function DataTable<TData>({
           <TableBody>
             {table.getRowModel()?.rows?.length ? (
               table.getRowModel()?.rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {pagination && <TableCell>{pagination.pageIndex * pagination.pageSize + row?.index + 1}</TableCell>}
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  className="hover:bg-neutral-50 dark:hover:bg-neutral-800/70"
+                >
+                  {pagination && (
+                    <TableCell className="text-neutral-600 dark:text-neutral-300">
+                      {pagination.pageIndex * pagination.pageSize + row?.index + 1}
+                    </TableCell>
+                  )}
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    <TableCell key={cell.id} className="text-neutral-700 dark:text-neutral-200">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-[32rem] text-center">
-                  {isLoading ? '' : 'No results.'}
+                <TableCell colSpan={columns.length} className="h-96 text-center">
+                  {isLoading ? (
+                    <div className="flex flex-col items-center justify-center ">
+                      <Spinner className="text-sky-500 size-16 mb-4" />
+                      <span className="text-sky-700 font-medium text-xl">Loading...</span>
+                    </div>
+                  ) : (
+                    'No results.'
+                  )}
                 </TableCell>
               </TableRow>
             )}

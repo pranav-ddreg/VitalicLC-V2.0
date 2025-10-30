@@ -20,9 +20,7 @@ interface ErrorResponse {
 const extractError = (error: unknown): ApiError => {
   if (axios.isAxiosError(error)) {
     return {
-      message:
-        // Try common shapes: { data: { message } } or fallback to axios error message
-        (error.response?.data as ErrorResponse)?.message || error.message || 'Something went wrong!',
+      message: (error.response?.data as ErrorResponse)?.message || error.message || 'Something went wrong!',
       status: error.response?.status,
     }
   }

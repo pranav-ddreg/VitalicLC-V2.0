@@ -31,5 +31,6 @@ router.post('/two-factor-verify/:id', authController.enableTwoFactorAuth)
 router.post('/sent-otp', authController.otpSent)
 router.post('/forget-password/verify-otp', authController.forgetPasswordOtpVerify)
 router.post('/forget-password', authController.forgetPassword)
+router.get('/session', middleware.checkToken, authController.session)
 
 export default router

@@ -51,10 +51,6 @@ const ProductInfo: React.FC = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  if (!productId || typeof productId !== 'string') {
-    return null
-  }
-
   const countryId = productId
   const [sortBy, setSortBy] = useState(searchParams.get('order') || '')
   const [query, setQuery] = useState(searchParams.get('search') || '')
@@ -138,6 +134,8 @@ const ProductInfo: React.FC = () => {
     setSortBy(order || '')
   }, [searchParams])
 
+  if (!productId || typeof productId !== 'string') return null
+
   return (
     <>
       <CustomConfirm
@@ -171,9 +169,9 @@ const ProductInfo: React.FC = () => {
         setId={setProductInfoId}
         data={productInfoData}
         setData={setProductInfoData}
-        countryId={countryId}
-        addProductId={productId}
-        productId={productId}
+        countryId={countryId as string}
+        addProductId={productId as string}
+        productId={productId as string}
         setProductId={setAddProductId}
       />
 

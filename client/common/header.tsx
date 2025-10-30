@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { Plus, LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface HeaderProps {
@@ -11,6 +11,8 @@ interface HeaderProps {
   btn?: boolean
   btnText?: string
   btnOnClick?: () => void
+  btnColor?: string
+  btnIcon?: LucideIcon
   children?: ReactNode
   className?: string
 }
@@ -21,6 +23,8 @@ const Header: React.FC<HeaderProps> = ({
   btn = false,
   btnText = 'Add New',
   btnOnClick,
+  btnColor,
+  btnIcon: Icon = Plus,
   children,
   className,
 }) => {
@@ -35,9 +39,12 @@ const Header: React.FC<HeaderProps> = ({
       ) : btn ? (
         <Button
           onClick={btnOnClick}
-          className="bg-sky-800 hover:bg-sky-800/90 dark:bg-sky-700 dark:hover:bg-sky-700/90 dark:text-white mt-0"
+          className={cn(
+            'mt-0 cursor-pointer',
+            btnColor || 'bg-sky-800  hover:bg-sky-800/90 dark:bg-sky-700 dark:hover:bg-sky-700/90 dark:text-white'
+          )}
         >
-          <Plus className="mr-2 h-4 w-4" />
+          <Icon className="mr-1 h-8 w-8" />
           {btnText}
         </Button>
       ) : null}

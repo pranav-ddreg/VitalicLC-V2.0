@@ -1,5 +1,6 @@
 'use client'
 import { Cross2Icon } from '@radix-ui/react-icons'
+import { DownloadIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { DataTableViewOptions } from './data-table-view-options'
@@ -29,6 +30,7 @@ interface DataTableToolbarProps<TData> {
   setQuery: (value: string) => void
   showSearch?: boolean
   showView?: boolean
+  export?: () => void
 }
 
 export function DataTableToolbar<TData>({
@@ -38,6 +40,7 @@ export function DataTableToolbar<TData>({
   setQuery,
   showSearch = true,
   showView = true,
+  export: exportData,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters?.length > 0
 
@@ -76,7 +79,15 @@ export function DataTableToolbar<TData>({
             </Button>
           )}
         </div>
-        {showView && <DataTableViewOptions table={table} />}
+        <div className="flex items-center gap-2">
+          {exportData && (
+            <Button variant="outline" onClick={exportData} className="h-8">
+              <DownloadIcon className="h-4 w-4 mr-2" />
+              Export
+            </Button>
+          )}
+          {showView && <DataTableViewOptions table={table} />}
+        </div>
       </div>
     </div>
   )

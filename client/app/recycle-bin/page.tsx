@@ -1,7 +1,6 @@
 import CustomBreadcrumbs from '@/common/CustomBreadcrumbs'
 import RecycleBinTable from '@/components/recycle-bin/recycle-bin-table'
 import React from 'react'
-import Header from '@/common/header'
 import { Suspense } from 'react'
 
 function page() {
@@ -14,7 +13,7 @@ function page() {
             { name: 'Recycle Bin', link: '' },
           ]}
         />
-        <Header title={'Recycle Bin'} />
+
         <RecycleBinTable />
       </Suspense>
     </>

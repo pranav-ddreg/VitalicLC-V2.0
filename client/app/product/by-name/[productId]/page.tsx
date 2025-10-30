@@ -55,7 +55,7 @@ export default function ProductInfoPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  if (!productId || typeof productId !== 'string') return null
+  // if (!productId || typeof productId !== 'string') return null
 
   const [sortBy, setSortBy] = useState<string>(searchParams.get('order') || '')
   const [query, setQuery] = useState<string>(searchParams.get('search') || '')

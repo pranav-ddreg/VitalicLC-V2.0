@@ -166,7 +166,7 @@ const ProductsByCountry: React.FC = () => {
               >
                 <div
                   className="shadow p-4 rounded h-full flex flex-col justify-between cursor-pointer"
-                  onClick={() => router.push(`/product/by-country/${country._id}`)}
+                  onClick={() => router.push(`/by-countries/${country._id}`)}
                 >
                   <div className="flex justify-between items-center gap-1">
                     <span className="text-blue-500 rounded-full">
