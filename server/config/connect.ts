@@ -34,9 +34,9 @@ export default async function (): Promise<mongoose.Connection> {
 
     const options: mongoose.ConnectOptions = {
       // Connection Pooling (Enterprise-ready)
-      maxPoolSize: 10, // Maximum connection pool size
-      minPoolSize: 2, // Minimum connections to maintain
-      maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
+      // maxPoolSize: 10, // Maximum connection pool size
+      // minPoolSize: 2, // Minimum connections to maintain
+      // maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
 
       // Compression (Performance optimization)
       compressors: 'zstd', // Use Zstd compression (modern, efficient)

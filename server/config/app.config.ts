@@ -46,8 +46,8 @@ const config = {
 
   // Rate limiting configuration
   rateLimit: {
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 200, // requests per window
+    windowMs: 15 * 60 * 1000,
+    max: 200,
     message: {
       error: 'Too many request, please try again later.',
       retryAfter: 900,
@@ -58,10 +58,21 @@ const config = {
 
   // Auth rate limiting (stricter)
   authRateLimit: {
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 10, // Only 10 login attempts
+    windowMs: 15 * 60 * 1000,
+    max: 10,
     message: {
       error: 'Too many login attempts',
+      retryAfter: 900,
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+  },
+
+  sessionRateLimit: {
+    windowMs: 15 * 60 * 1000,
+    max: 20000,
+    message: {
+      error: 'Too many session check requests, please try again later.',
       retryAfter: 900,
     },
     standardHeaders: true,

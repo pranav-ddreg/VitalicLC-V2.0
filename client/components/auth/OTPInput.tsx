@@ -29,7 +29,7 @@ const OTPInput: React.FC<OTPInputProps> = ({ name, values, setFieldValue, onChan
 
   return (
     <div>
-      <label className="block text-sm font-semibold text-slate-900 mb-3 w-1/2">Enter code</label>
+      <label className="block text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3 w-1/2">Enter code</label>
       <div className="grid grid-cols-6 gap-2">
         {values.map((value, index) => (
           <input
@@ -38,7 +38,7 @@ const OTPInput: React.FC<OTPInputProps> = ({ name, values, setFieldValue, onChan
               if (el) inputRefs.current[index] = el
             }}
             type="text"
-            className="w-full h-12 text-center text-lg font-bold border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+            className="w-full h-12 text-center text-lg font-bold border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 dark:bg-slate-800 dark:text-slate-100 transition-all"
             value={value}
             onChange={(e) => onChange(index, e.target.value, setFieldValue)}
             onKeyDown={(e) => onKeyDown(index, e, setFieldValue)}

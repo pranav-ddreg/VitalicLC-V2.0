@@ -446,7 +446,7 @@ export default {
 
       const searchCondition = getSearch()
 
-      const data = Variation.aggregate([
+      const result = await Variation.aggregate([
         match,
         {
           $lookup: {
@@ -523,41 +523,39 @@ export default {
         { $set: { count: '$count.totalCount' } },
       ])
 
-      data.exec(async (error: any, result: any) => {
-        if (result) {
-          if (result.length === 0) return res.status(200).json({ code: 'FETCHED', data: {} })
-          if (isDownload === 'true') {
-            if (filetype === 'xlsx') {
-              const xlsxBuffer = await exportSelectedFieldsXLSX(result[0]?.data, fieldsToExport)
-              res.setHeader('Content-Type', 'application/vnd/openxmlformats-officedocument.spreadsheetml.sheet')
-              res.setHeader('Content-Disposition', 'attachment: filename=VariationData.xlsx')
-              return res.status(200).send(xlsxBuffer)
-            }
-
-            if (filetype === 'pdf') {
-              const { ok, fileBuffer, error } = await generatingEjsWithFieldToExportAndTitle(
-                'exportSelectedFields',
-                result[0]?.data,
-                fieldsToExport,
-                'Variation',
-                true
-              )
-
-              if (error) return res.status(400).json({ message: 'Something Broken!!' })
-
-              res.set('Content-Type', 'application/pdf')
-              return res.status(200).send(fileBuffer)
-            }
-
-            return res.status(400).json({ message: 'Please provide proper file ' })
+      if (result && Array.isArray(result) && result.length > 0) {
+        if (isDownload === 'true') {
+          if (filetype === 'xlsx') {
+            const xlsxBuffer = exportSelectedFieldsXLSX(result[0]?.data || [], fieldsToExport)
+            res.setHeader('Content-Type', 'application/vnd/openxmlformats-officedocument.spreadsheetml.sheet')
+            res.setHeader('Content-Disposition', 'attachment: filename=VariationData.xlsx')
+            return res.status(200).send(xlsxBuffer)
           }
 
-          return res.status(200).json({ code: 'FETCHED', data: result[0] || {} })
-        } else return res.status(400).json({ code: 'ERROROCCURED', message: error })
-      })
-      return res.status(200).json({ code: 'FETCHED', data: {} })
+          if (filetype === 'pdf') {
+            const { ok, fileBuffer, error } = await generatingEjsWithFieldToExportAndTitle(
+              'exportSelectedFields',
+              result[0]?.data || [],
+              fieldsToExport,
+              'Variation',
+              true
+            )
+
+            if (error) return res.status(400).json({ message: 'Something Broken!!' })
+
+            res.set('Content-Type', 'application/pdf')
+            return res.status(200).send(fileBuffer)
+          }
+
+          return res.status(400).json({ message: 'Please provide proper file ' })
+        }
+
+        return res.status(200).json({ code: 'FETCHED', data: result[0] || {} })
+      } else {
+        return res.status(200).json({ code: 'FETCHED', data: {} })
+      }
     } catch (error) {
-      console.log('Error: ' + error)
+      console.log('Error in getallVariation API: ' + error)
       return res.status(500).json({ message: 'Something Broken!!' })
     }
   },
@@ -598,7 +596,7 @@ export default {
         }
       }
 
-      const data = Variation.aggregate([
+      const result = await Variation.aggregate([
         match,
         {
           $lookup: {
@@ -679,38 +677,36 @@ export default {
         { $set: { count: '$count.totalCount' } },
       ])
 
-      data.exec(async (error: any, result: any) => {
-        if (result) {
-          if (result.length === 0) return res.status(200).json({ code: 'FETCHED', data: {} })
-          if (isDownload === 'true') {
-            if (filetype === 'xlsx') {
-              const xlsxBuffer = await exportSelectedFieldsXLSX(result[0]?.data, fieldsToExport)
-              res.setHeader('Content-Type', 'application/vnd/openxmlformats-officedocument.spreadsheetml.sheet')
-              res.setHeader('Content-Disposition', 'attachment: filename=VariationData.xlsx')
-              return res.status(200).send(xlsxBuffer)
-            }
-
-            if (filetype === 'pdf') {
-              const { ok, fileBuffer, error } = await generatingEjsWithFieldToExportAndTitle(
-                'exportSelectedFields',
-                result[0]?.data,
-                fieldsToExport,
-                'Variation',
-                true
-              )
-              if (error) return res.status(400).json({ message: 'Something Broken!!' })
-
-              res.set('Content-Type', 'application/pdf')
-              return res.status(200).send(fileBuffer)
-            }
-
-            return res.status(400).json({ message: 'Please provide proper file ' })
+      if (result && Array.isArray(result) && result.length > 0) {
+        if (isDownload === 'true') {
+          if (filetype === 'xlsx') {
+            const xlsxBuffer = exportSelectedFieldsXLSX(result[0]?.data || [], fieldsToExport)
+            res.setHeader('Content-Type', 'application/vnd/openxmlformats-officedocument.spreadsheetml.sheet')
+            res.setHeader('Content-Disposition', 'attachment: filename=VariationData.xlsx')
+            return res.status(200).send(xlsxBuffer)
           }
 
-          return res.status(200).json({ code: 'FETCHED', data: result[0] || {} })
-        } else return res.status(400).json({ code: 'ERROROCCURED', message: error })
-      })
-      return res.status(200).json({ code: 'FETCHED', data: {} })
+          if (filetype === 'pdf') {
+            const { ok, fileBuffer, error } = await generatingEjsWithFieldToExportAndTitle(
+              'exportSelectedFields',
+              result[0]?.data || [],
+              fieldsToExport,
+              'Variation',
+              true
+            )
+            if (error) return res.status(400).json({ message: 'Something Broken!!' })
+
+            res.set('Content-Type', 'application/pdf')
+            return res.status(200).send(fileBuffer)
+          }
+
+          return res.status(400).json({ message: 'Please provide proper file ' })
+        }
+
+        return res.status(200).json({ code: 'FETCHED', data: result[0] || {} })
+      } else {
+        return res.status(200).json({ code: 'FETCHED', data: {} })
+      }
     } catch (error) {
       console.log('Error: ' + error)
       return res.status(500).json({ message: 'Something Broken!!' })

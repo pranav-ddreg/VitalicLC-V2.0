@@ -57,18 +57,21 @@ export class SecurityMiddleware {
     console.log('✅ Additional security headers configured')
   }
 
-  static setupRateLimiting(app: express.Application): void {
-    console.log('🏃 Setting up rate limiting...')
+  // static setupRateLimiting(app: express.Application): void {
+  //   console.log('🏃 Setting up rate limiting...')
 
-    const rateLimit = require('express-rate-limit')
-    const limiter = rateLimit.rateLimit(config.rateLimit)
-    app.use('/api/', limiter)
+  //   const rateLimit = require('express-rate-limit')
+  //   const limiter = rateLimit.rateLimit(config.rateLimit)
+  //   app.use('/api/', limiter)
 
-    const authLimiter = rateLimit.rateLimit(config.authRateLimit)
-    app.use('/api/auth', authLimiter)
+  //   const authLimiter = rateLimit.rateLimit(config.authRateLimit)
+  //   app.use('/api/auth', authLimiter)
 
-    console.log('✅ Rate limiting configured')
-  }
+  //   const sessionLimiter = rateLimit.rateLimit(config.sessionRateLimit)
+  //   app.use('/api/auth/session', sessionLimiter)
+
+  //   console.log('✅ Rate limiting configured')
+  // }
 
   static setupCORS(app: express.Application): void {
     console.log('🌐 Setting up CORS...')
@@ -107,7 +110,7 @@ export class SecurityMiddleware {
     this.setupHelmet(app)
     this.setupAdditionalHeaders(app)
     this.setupCORS(app)
-    this.setupRateLimiting(app)
+    // this.setupRateLimiting(app)
     this.setupUploadLimits(app)
     this.setupLogging(app)
 
