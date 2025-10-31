@@ -8,4 +8,13 @@
 *.md     text eol=lf
 .gitignore  text eol=lf
 yarn.lock text eol=lf
+
+# Force binary mode for images to prevent corruption
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg binary
+*.ico binary
+
 *        text eol=lf

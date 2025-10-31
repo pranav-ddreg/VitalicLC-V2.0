@@ -326,7 +326,7 @@ export function ThemeToggleButton() {
       <Button
         variant="outline"
         size="icon"
-        className="relative overflow-hidden border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-yellow-50 hover:from-orange-100 hover:to-yellow-100"
+        className="relative overflow-hidden border-2 border-orange-200 bg-linear-to-br from-orange-50 to-yellow-50 hover:from-orange-100 hover:to-yellow-100"
       >
         <LuSun className="h-5 w-5 text-orange-500" />
       </Button>
@@ -347,7 +347,7 @@ export function ThemeToggleButton() {
         ${
           isDark
             ? 'border-indigo-500/50 bg-slate-900 hover:bg-slate-800 '
-            : 'border-orange-300/60 bg-gradient-to-br from-orange-50 to-yellow-50 hover:from-orange-100 hover:to-yellow-100 '
+            : 'border-orange-300/60 bg-linear-to-br from-orange-50 to-yellow-50 hover:from-orange-100 hover:to-yellow-100 '
         }
       `}
     >
@@ -356,10 +356,10 @@ export function ThemeToggleButton() {
         absolute inset-0 transition-all duration-300 ease-in-out
         ${
           isTransitioning && transitionColors
-            ? `bg-gradient-to-br ${transitionColors}`
+            ? `bg-linear-to-br ${transitionColors}`
             : isDark
-              ? 'bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900'
-              : 'bg-gradient-to-br from-orange-100 via-yellow-100 to-amber-100'
+              ? 'bg-linear-to-br from-slate-900 via-indigo-900 to-purple-900'
+              : 'bg-linear-to-br from-orange-100 via-yellow-100 to-amber-100'
         }
       `}
       />
@@ -596,7 +596,7 @@ export function ThemeToggleButton() {
         ${isTransitioning ? 'opacity-100' : 'opacity-0'}
       `}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
       </div>
 
       <span className="sr-only">{isDark ? 'Switch to light mode' : 'Switch to dark mode'}</span>

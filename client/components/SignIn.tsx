@@ -177,7 +177,7 @@ const SignIn: React.FC = () => {
       const payload = { newPassword: values.password, email: forgotPasswordEmail }
       const response = await POST('/auth/forget-password', payload, '/api')
       if (response) {
-        const responseData = response as any
+        const responseData = response as { message?: string; data?: { data?: string } }
         const msg = responseData?.message || responseData?.data?.data || 'Password reset successfully.'
         toast.success(msg)
         handleBackToLogin()
@@ -219,8 +219,11 @@ const SignIn: React.FC = () => {
         toast.error(data?.message || 'Failed to resend OTP. Please try again.')
       }
     } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      toast.error((error as any)?.message || 'Something went wrong while resending OTP.')
+      if (error instanceof Error) {
+        toast.error(error.message || 'Something went wrong while resending OTP.')
+      } else {
+        toast.error('Something went wrong while resending OTP.')
+      }
     }
 
     // Keep loader and disabled for 30 seconds

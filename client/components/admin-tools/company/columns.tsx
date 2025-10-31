@@ -28,7 +28,7 @@ export const useColumns = () => {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Logo" className="text-neutral-500" />,
         cell: ({ row }) => (
           <div className="w-[200px] flex gap-2 py-2">
-            <Image src={String(row?.original?.logo?.Location)} alt="Company Logo" width={50} height={50} />
+            <Image src={String(row?.original?.logo?.Location)} alt="Company Logo" width={50} height={50} unoptimized />
           </div>
         ),
         enableSorting: true,

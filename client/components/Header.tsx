@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { FaBars, FaCompress, FaExpand } from 'react-icons/fa'
 import { FiSearch } from 'react-icons/fi'
 import { toggleFullScreen } from '../utils/ToggleFullScreen'
-// import logo from '@/public/logo'
+import logo from '@/public/logo.png'
 import logoSmall from '@/public/mini-logo.png'
 
 // ✅ Props from parent layout
@@ -29,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
     >
       {/* Left Section: Logo + Sidebar Toggle */}
       <div className="flex items-center gap-20">
-        <Image src={open ? logoSmall : logoSmall} alt="Website Logo" width={open ? 125 : 30} height={open ? 40 : 30} />
+        <Image src={open ? logo : logoSmall} alt="Website Logo" width={open ? 125 : 30} height={open ? 40 : 30} />
 
         {/* Sidebar toggle button */}
         <button onClick={() => setOpen(!open)} className="text-white hover:text-gray-200">

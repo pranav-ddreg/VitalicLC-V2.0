@@ -55,9 +55,6 @@ export default function ProductInfoPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const isValid = Boolean(productId && typeof productId === 'string')
-  const typedProductId = isValid ? (productId as string) : ''
-
   const [sortBy, setSortBy] = useState<string>(searchParams.get('order') || '')
   const [query, setQuery] = useState<string>(searchParams.get('search') || '')
   const searchQuery = useDebounce(query, 500)
@@ -70,7 +67,7 @@ export default function ProductInfoPage() {
   const [superAdmin] = useState<boolean>(true)
   const [showSortDropdown, setShowSortDropdown] = useState(false)
 
-  const apiUrl = `/api/preregistration/productCountry/${typedProductId}?limit=12&search=${searchQuery}&order=${sortBy}&sort=${
+  const apiUrl = `/api/preregistration/productCountry/${productId}?limit=12&search=${searchQuery}&order=${sortBy}&sort=${
     sortBy === '' ? '' : 'title'
   }`
 
@@ -137,7 +134,7 @@ export default function ProductInfoPage() {
     router.replace(`${window.location.pathname}?${params.toString()}`)
   }
 
-  if (!isValid) return null
+  if (!productId || typeof productId !== 'string') return null
 
   // ------------------- UI -------------------
   return (
@@ -276,7 +273,7 @@ export default function ProductInfoPage() {
             >
               <div
                 className="bg-white shadow p-4 rounded h-full flex flex-col justify-between cursor-pointer"
-                onClick={() => router.push(`/product/by-name/${typedProductId}/${preregistration._id}`)}
+                onClick={() => router.push(`/product/by-name/${productId}/${preregistration._id}`)}
               >
                 <div className="flex justify-between items-center">
                   <div className="text-lg font-bold line-clamp-1 flex-1">{preregistration.country?.title}</div>
