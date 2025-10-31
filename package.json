@@ -21,16 +21,16 @@
     "dev:server": "cd server && yarn dev",
     "check-types": "yarn check-types:client && yarn check-types:server",
     "check-types:client": "cd client && yarn check-types",
-    "check-types:server": "cd server && tsc --noEmit",
+    "check-types:server": "cd server --noEmit",
     "check-format": "yarn check-format:client && yarn check-format:server",
     "check-format:client": "cd client && yarn check-format",
     "check-format:server": "cd server && yarn check-format",
     "check-lint": "yarn check-lint:client && yarn check-lint:server",
     "check-lint:client": "cd client && yarn check-lint",
-    "check-lint:server": "cd server && yarn run eslint --ext .ts,.js",
+    "check-lint:server": "cd server && yarn run eslint ",
     "lint": "yarn lint:client && yarn lint:server",
     "lint:client": "cd client && yarn lint",
-    "lint:server": "cd server && yarn run eslint --ext .ts,.js --fix",
+    "lint:server": "cd server && yarn run eslint --fix",
     "format": "yarn format:client && yarn format:server",
     "format:client": "cd client && yarn format",
     "format:server": "cd server && yarn format",
@@ -46,6 +46,8 @@
     "lint-staged": "^15.2.11"
   },
   "resolutions": {
-    "d3-color": ">=3.1.0"
+    "d3-color": ">=3.1.0",
+    "semver": "^7.7.3",
+    "typescript": "5.5.4"
   }
 }

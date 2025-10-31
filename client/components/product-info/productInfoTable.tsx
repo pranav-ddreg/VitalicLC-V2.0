@@ -129,7 +129,7 @@ const ProductInfoTable: React.FC = () => {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Country" className="text-neutral-500" />,
         cell: ({ row }) => (
           <div className="w-[150px] flex gap-2 py-2">
-            <span>{String((row?.original?.country as any)?.title)}</span>
+            <span>{String((row?.original?.country as { title?: string | unknown })?.title)}</span>
           </div>
         ),
         enableSorting: true,

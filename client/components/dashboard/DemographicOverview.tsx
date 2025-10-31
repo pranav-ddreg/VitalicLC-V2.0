@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { ComposableMap, Geographies, Geography, Graticule, Sphere } from 'react-simple-maps'
+// import { ComposableMap, Geographies, Geography, Graticule, Sphere } from 'react-simple-maps'
 import { Tooltip } from 'react-tooltip'
 import { useRouter } from 'next/navigation'
 import { FaCompress, FaExpand } from 'react-icons/fa'
@@ -71,10 +71,10 @@ const DemographicOverviewContent: React.FC<DemographicOverviewContentProps> = ({
       </div>
 
       {/* Map Section */}
-      <div className="p-3" data-tooltip-id="country-tooltip" data-tooltip-content={content?.country || ''}>
-        <ComposableMap projectionConfig={{ rotate: [-10, 0, 0], scale: 147 }} height={393}>
-          {/* <Sphere stroke="rgb(31 42 60)" strokeWidth={0.2} /> */}
-          <Sphere id="sphere" fill="transparent" stroke="rgb(31 42 60)" strokeWidth={0.2} />
+      {/* <div className="p-3" data-tooltip-id="country-tooltip" data-tooltip-content={content?.country || ''}>
+        <ComposableMap projectionConfig={{ rotate: [-10, 0, 0], scale: 147 }} height={393}> */}
+      {/* <Sphere stroke="rgb(31 42 60)" strokeWidth={0.2} /> */}
+      {/* <Sphere id="sphere" fill="transparent" stroke="rgb(31 42 60)" strokeWidth={0.2} />
           <Graticule stroke="rgb(31 42 60)" strokeWidth={0.2} />
 
           <Geographies geography={geoUrl}>
@@ -116,10 +116,10 @@ const DemographicOverviewContent: React.FC<DemographicOverviewContentProps> = ({
               })
             }
           </Geographies>
-        </ComposableMap>
+        </ComposableMap> */}
 
-        {/* Tooltip */}
-        <Tooltip id="country-tooltip" className="bg-gray-900 text-white rounded-md p-2 text-sm">
+      {/* Tooltip */}
+      {/* <Tooltip id="country-tooltip" className="bg-gray-900 text-white rounded-md p-2 text-sm">
           {content && (
             <div>
               <h5 className="text-white text-lg font-semibold mb-1">{content.country}</h5>
@@ -132,7 +132,7 @@ const DemographicOverviewContent: React.FC<DemographicOverviewContentProps> = ({
             </div>
           )}
         </Tooltip>
-      </div>
+      </div> */}
     </div>
   )
 }

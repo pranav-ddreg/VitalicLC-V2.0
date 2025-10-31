@@ -44,17 +44,17 @@ export default function ProductDetails() {
   const setProductTitle = (val: string | undefined) => setProduct(val ? { title: val } : null)
   const [registrationDate, setRegistrationDate] = useState<string | null>(null)
   const setRegistrationDateTitle = (val: string | undefined) => setRegistrationDate(val || null)
-  const [showRenewalModal, setShowRenewalModal] = useState(false)
-  const [renewalMode, setRenewalMode] = useState<'add' | 'edit'>('add')
-  const [renewalId, setRenewalId] = useState<string | number | null>(null)
-  const [renewalData, setRenewalData] = useState<RenewalData | null>(null)
+  // const [showRenewalModal, setShowRenewalModal] = useState(false)
+  // const [renewalMode, setRenewalMode] = useState<'add' | 'edit'>('add')
+  // const [renewalId, setRenewalId] = useState<string | number | null>(null)
+  // const [renewalData, setRenewalData] = useState<RenewalData | null>(null)
 
-  const onEditRenewal = (rowData: RenewalData) => {
-    setRenewalMode('edit')
-    setRenewalId(rowData.id ?? null)
-    setRenewalData(rowData)
-    setShowRenewalModal(true)
-  }
+  // const onEditRenewal = (rowData: RenewalData) => {
+  //   setRenewalMode('edit')
+  //   setRenewalId(rowData.id ?? null)
+  //   setRenewalData(rowData)
+  //   setShowRenewalModal(true)
+  // }
 
   console.log(registrationDate)
 
@@ -106,7 +106,8 @@ export default function ProductDetails() {
           />
 
           <div className="lg:col-span-9 space-y-6"></div>
-          <RenewalHistoryTable preregistrationId={preregistrationId} onEdit={onEditRenewal} />
+          {/* <RenewalHistoryTable preregistrationId={preregistrationId} onEdit={onEditRenewal} /> */}
+          <RenewalHistoryTable preregistrationId={preregistrationId} onEdit={() => {}} />
         </div>
       </div>
 

@@ -20,7 +20,6 @@ const SignIn: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
-  console.log('Forgot Password Email:', forgotPasswordEmail) // Debugging line
   const [otpValues, setOtpValues] = useState<string[]>(['', '', '', '', '', ''])
   const [forgotOtpValues, setForgotOtpValues] = useState<string[]>(['', '', '', '', '', ''])
   const otpRefs = useRef<(HTMLInputElement | null)[]>(Array(6).fill(null))

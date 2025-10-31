@@ -30,7 +30,7 @@ mongoose.connection.on('reconnected', () => {
 // Database connection function with comprehensive configuration
 export default async function (): Promise<mongoose.Connection> {
   try {
-    const connectionString = `${config.database.url}/${config.database.name}`
+    const connectionString = `${config.database.url}/${config.database.name}?retryWrites=true&w=majority`
 
     const options: mongoose.ConnectOptions = {
       // Connection Pooling (Enterprise-ready)
