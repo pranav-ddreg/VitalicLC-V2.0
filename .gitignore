@@ -2,6 +2,7 @@
 node_modules/
 **/node_modules/
 yarn.lock.backup
+yarn.lock
 package-lock.json.backup
 yarn.lock
 package-lock.json
@@ -153,11 +154,11 @@ test-results/
 junit.xml
 
 # Screenshots and media for tests
-**/screenshots/
-**/*.png
-**/*.jpg
-**/*.jpeg
-**/*.gif
+# **/screenshots/
+# **/*.png
+# **/*.jpg
+# **/*.jpeg
+# **/*.gif
 
 # Local development
 .local
