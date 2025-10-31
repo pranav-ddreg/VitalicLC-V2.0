@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useCallback } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 
 interface MarqueeItem {
@@ -46,6 +46,44 @@ const Marquee: React.FC<MarqueeProps> = ({
     }
   }, [renewalHeadline, variationHeadline, expireHeadline])
 
+  const stopLoop = useCallback(() => {
+    if (animationFrame.current) {
+      cancelAnimationFrame(animationFrame.current)
+      animationFrame.current = null
+    }
+  }, [])
+
+  // Animation loop
+  const startLoop = useCallback(
+    (fromX: number) => {
+      stopLoop()
+      controls.set({ x: fromX })
+      lastTimestamp.current = null
+
+      const step = (timestamp: number) => {
+        if (lastTimestamp.current === null) lastTimestamp.current = timestamp
+        const elapsed = (timestamp - lastTimestamp.current) / 1000 // seconds
+        lastTimestamp.current = timestamp
+
+        let nextX = fromX + SPEED * elapsed
+
+        if (nextX >= containerWidth) {
+          nextX = -textWidth
+          fromX = -textWidth
+        } else {
+          fromX = nextX
+        }
+
+        setCurrentX(nextX)
+        controls.set({ x: nextX })
+        animationFrame.current = requestAnimationFrame(step)
+      }
+
+      animationFrame.current = requestAnimationFrame(step)
+    },
+    [containerWidth, textWidth, controls, setCurrentX, stopLoop]
+  )
+
   // Start marquee when widths change
   useEffect(() => {
     if (textWidth > 0 && containerWidth > 0) {
@@ -54,7 +92,7 @@ const Marquee: React.FC<MarqueeProps> = ({
       if (!isHovered) startLoop(-textWidth)
     }
     return () => stopLoop()
-  }, [textWidth, containerWidth])
+  }, [textWidth, containerWidth, controls, isHovered, startLoop, stopLoop])
 
   // Pause/resume on hover if enabled
   useEffect(() => {
@@ -63,47 +101,12 @@ const Marquee: React.FC<MarqueeProps> = ({
     } else if (textWidth > 0 && containerWidth > 0) {
       startLoop(currentX)
     }
-  }, [isHovered, pauseOnHover])
-
-  // Animation loop
-  const startLoop = (fromX: number) => {
-    stopLoop()
-    controls.set({ x: fromX })
-    lastTimestamp.current = null
-
-    const step = (timestamp: number) => {
-      if (lastTimestamp.current === null) lastTimestamp.current = timestamp
-      const elapsed = (timestamp - lastTimestamp.current) / 1000 // seconds
-      lastTimestamp.current = timestamp
-
-      let nextX = fromX + SPEED * elapsed
-
-      if (nextX >= containerWidth) {
-        nextX = -textWidth
-        fromX = -textWidth
-      } else {
-        fromX = nextX
-      }
-
-      setCurrentX(nextX)
-      controls.set({ x: nextX })
-      animationFrame.current = requestAnimationFrame(step)
-    }
-
-    animationFrame.current = requestAnimationFrame(step)
-  }
-
-  const stopLoop = () => {
-    if (animationFrame.current) {
-      cancelAnimationFrame(animationFrame.current)
-      animationFrame.current = null
-    }
-  }
+  }, [isHovered, pauseOnHover, containerWidth, currentX, startLoop, textWidth, stopLoop])
 
   const handleMouseEnter = () => setIsHovered(true)
   const handleMouseLeave = () => setIsHovered(false)
 
-  useEffect(() => () => stopLoop(), [])
+  useEffect(() => () => stopLoop(), [stopLoop])
 
   return (
     <div className="mb-4 overflow-hidden" ref={containerRef}>

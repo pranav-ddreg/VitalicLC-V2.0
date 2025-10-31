@@ -33,7 +33,7 @@ type ResetPasswordFormProps = {
 
 const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onSubmit, onBack }) => {
   const methods: UseFormReturn<FormValues> = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver<any>(schema),
     defaultValues: { password: '', confirmPassword: '' },
     mode: 'onChange',
   })
@@ -52,15 +52,15 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onSubmit, onBack 
         <button
           type="button"
           onClick={onBack}
-          className="flex items-center text-slate-500 hover:text-slate-700 text-sm font-medium mb-4 transition-colors"
+          className="flex items-center text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 text-sm font-medium mb-4 transition-colors"
         >
           <ChevronLeft className="w-4 h-4 mr-1" />
           Back
         </button>
 
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Create new password</h2>
-          <p className="text-slate-600 text-sm">Enter a strong password to secure your account</p>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Create new password</h2>
+          <p className="text-slate-600 dark:text-slate-400 text-sm">Enter a strong password to secure your account</p>
         </div>
 
         <div>

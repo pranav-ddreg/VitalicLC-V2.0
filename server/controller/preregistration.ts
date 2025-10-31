@@ -188,7 +188,7 @@ export default {
     }
   },
 
-  getallPreRegistration: async (req: RequestWithUser, res: Response): Promise<Response> => {
+  getallPreRegistration: async (req: RequestWithUser, res: Response): Promise<void> => {
     try {
       const {
         searchTitle,
@@ -333,16 +333,14 @@ export default {
 
       data.exec(async (error: any, result: any) => {
         if (result) {
-          if (result.length === 0) return res.status(200).json({ code: 'FETCHED', data: {} })
-          if (isDownload === 'true') {
+          if (result.length === 0) res.status(200).json({ code: 'FETCHED', data: {} })
+          else if (isDownload === 'true') {
             if (filetype === 'xlsx') {
               const xlsxBuffer = await exportSelectedFieldsXLSX(result[0]?.data, fieldsToExport)
               res.setHeader('Content-Type', 'application/vnd/openxmlformats-officedocument.spreadsheetml.sheet')
               res.setHeader('Content-Disposition', 'attachment: filename=PreregistrationData.xlsx')
-              return res.status(200).send(xlsxBuffer)
-            }
-
-            if (filetype === 'pdf') {
+              res.status(200).send(xlsxBuffer)
+            } else if (filetype === 'pdf') {
               const { ok, fileBuffer, error } = await generatingEjsWithFieldToExportAndTitle(
                 'exportSelectedFields',
                 result[0]?.data,
@@ -351,23 +349,22 @@ export default {
                 true
               )
 
-              if (error) return res.status(400).json({ message: 'Something Broken!!' })
-
-              res.set('Content-Type', 'application/pdf')
-              return res.status(200).send(fileBuffer)
+              if (error) res.status(400).json({ message: 'Something Broken!!' })
+              else {
+                res.set('Content-Type', 'application/pdf')
+                res.status(200).send(fileBuffer)
+              }
+            } else {
+              res.status(400).json({ message: 'Please provide proper file ' })
             }
-
-            return res.status(400).json({ message: 'Please provide proper file ' })
+          } else {
+            res.status(200).json({ code: 'FETCHED', data: result[0] || {} })
           }
-
-          return res.status(200).json({ code: 'FETCHED', data: result[0] || {} })
-        } else return res.status(400).json({ code: 'ERROROCCURED', message: error })
+        } else res.status(400).json({ code: 'ERROROCCURED', message: error })
       })
-
-      return res.status(200).end() // For consistency with other async functions
     } catch (error) {
       console.log('Error: ' + error)
-      return res.status(500).json({ message: 'Something Broken!!' })
+      res.status(500).json({ message: 'Something Broken!!' })
     }
   },
 

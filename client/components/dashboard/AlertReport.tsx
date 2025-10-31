@@ -39,7 +39,7 @@ export default function AlertReport() {
 
   useEffect(() => {
     mutate()
-  }, [])
+  }, [mutate])
 
   // Auto-set current year if available
   useEffect(() => {

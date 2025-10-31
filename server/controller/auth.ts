@@ -380,13 +380,13 @@ export default {
       if (updatedUserPassword) {
         res.status(200).json({
           code: 'UPDATED',
-          data: 'YOUR PASWORD HAS BEEN UPDATED !!',
+          data: 'Password reset successfully !!',
         })
         return
       } else {
         res.status(400).json({
           code: 'NOTUPDATED',
-          data: 'THIS USER DOES NOT EXIST IN OUR DATABASE !!',
+          data: 'User not exist !!',
         })
         return
       }
@@ -884,12 +884,12 @@ export default {
       if (updatedUserPassword) {
         return res.status(200).json({
           code: 'UPDATED',
-          data: 'YOUR PASWORD HAS BEEN UPDATED !!',
+          data: 'Password reset successfully !!',
         })
       } else {
         return res.status(400).json({
           code: 'NOTUPDATED',
-          data: 'THIS USER DOES NOT EXIST IN OUR DATABASE !!',
+          data: 'User not exist !!',
         })
       }
     } catch (error: any) {
@@ -897,6 +897,28 @@ export default {
       return res.status(400).json({
         code: 'ERROROCCURED',
         message: error,
+      })
+    }
+  },
+
+  //-----------------Session Verification API-------------------
+  session: async (req: RequestWithUser, res: Response): Promise<void> => {
+    try {
+      // Check if user is authenticated via middleware
+      if (!req.user) {
+        res.status(401).json({ message: 'Unauthorized - No session found' })
+        return
+      }
+
+      // Return user data if session is valid
+      res.status(200).json({
+        code: 'SESSION_VALID',
+        user: req.user,
+      })
+    } catch (error: any) {
+      res.status(500).json({
+        code: 'ERROROCCURED',
+        message: error.message,
       })
     }
   },

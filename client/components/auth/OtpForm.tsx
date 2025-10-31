@@ -45,7 +45,7 @@ const OtpForm: React.FC<OtpFormProps> = ({
   isResending = false,
 }) => {
   const { handleSubmit, setValue, formState } = useForm<OtpFormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver<any>(schema),
     defaultValues: { otp: '' },
     mode: 'onChange',
   })
@@ -55,19 +55,19 @@ const OtpForm: React.FC<OtpFormProps> = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="space-y-6 w-1/2">
+    <form onSubmit={handleSubmit(submit)} className="space-y-6">
       <button
         type="button"
         onClick={onBack}
-        className="flex items-center text-slate-500 hover:text-slate-700 text-sm font-medium mb-4 transition-colors"
+        className="flex items-center text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 text-sm font-medium mb-4 transition-colors"
       >
         <ChevronLeft className="w-4 h-4 mr-1" />
         Back
       </button>
 
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">{title}</h2>
-        {subtitle && <p className="text-slate-600 text-sm">{subtitle}</p>}
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">{title}</h2>
+        {subtitle && <p className="text-slate-600 dark:text-slate-400 text-sm">{subtitle}</p>}
       </div>
 
       <OTPInput
@@ -87,13 +87,13 @@ const OtpForm: React.FC<OtpFormProps> = ({
       </button>
 
       {onResend && (
-        <p className="text-center text-sm text-slate-600">
-          Didn{"'"}t receive the code?{' '}
+        <p className="text-center text-sm text-slate-600 dark:text-slate-400">
+          Didn&apos;t receive the code?{' '}
           <button
             type="button"
             onClick={onResend}
             disabled={resendDisabled || isResending}
-            className="text-blue-600 hover:text-blue-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isResending ? 'Sending...' : 'Resend'}
           </button>

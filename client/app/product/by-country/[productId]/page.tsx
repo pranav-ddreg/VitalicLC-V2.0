@@ -51,11 +51,9 @@ const ProductInfo: React.FC = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  if (!productId || typeof productId !== 'string') {
-    return null
-  }
-
-  const countryId = productId
+  const isValid = Boolean(productId && typeof productId === 'string')
+  const countryId = isValid ? (productId as string) : ''
+  const typedProductId = isValid ? (productId as string) : ''
   const [sortBy, setSortBy] = useState(searchParams.get('order') || '')
   const [query, setQuery] = useState(searchParams.get('search') || '')
   const searchQuery = useDebounce(query, 500)
@@ -157,7 +155,7 @@ const ProductInfo: React.FC = () => {
         setId={setId}
         data={productFormData}
         setData={setProductFormData}
-        productId={productId}
+        productId={typedProductId}
         setProductId={setAddProductId}
       />
 
@@ -172,8 +170,8 @@ const ProductInfo: React.FC = () => {
         data={productInfoData}
         setData={setProductInfoData}
         countryId={countryId}
-        addProductId={productId}
-        productId={productId}
+        addProductId={typedProductId}
+        productId={typedProductId}
         setProductId={setAddProductId}
       />
 

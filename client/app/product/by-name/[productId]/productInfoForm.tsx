@@ -69,6 +69,7 @@ interface ProductInfoFormProps {
   data: ProductDataType | null
   setData: (data: ProductDataType | null) => void
   addProductId?: string
+  countryId?: string
 }
 
 // ------------------- COMPONENT -------------------
@@ -83,8 +84,9 @@ const ProductInfoForm: React.FC<ProductInfoFormProps> = ({
   data,
   setData,
   addProductId,
+  countryId,
 }) => {
-  const { productId, countryId } = useParams() as { productId?: string; countryId?: string }
+  const { productId } = useParams() as { productId?: string }
 
   const [user, setUser] = useState<{ company?: { _id?: string } } | null>(null)
 

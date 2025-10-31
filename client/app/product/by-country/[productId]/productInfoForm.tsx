@@ -84,7 +84,7 @@ const ProductInfoForm: React.FC<ProductInfoFormProps> = ({
   setId,
   data,
   setData,
-  //   countryId,
+  countryId,
   addProductId,
   //   productId,
   //   setProductId,
@@ -114,7 +114,7 @@ const ProductInfoForm: React.FC<ProductInfoFormProps> = ({
     defaultValues: {
       product: addProductId || '',
       remark: '',
-      country: '',
+      country: countryId,
       expApprovalDate: '',
       submissionDate: '',
       expLaunchDate: '',
